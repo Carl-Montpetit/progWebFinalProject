@@ -1,0 +1,56 @@
+{% extends "default.html" %} {% block content %}
+<div id="body-home">
+  <div class="row justify-content-center mt-5 mb-3">
+    <h1
+      class="
+        container
+        w-50
+        display-3
+        text-light
+        border border-dark
+        bg-info
+        text-center
+        rounded
+        m-3
+        p-2
+        font-weight-bolder
+      "
+    >
+      Voici l'article du lien <strong><u>{{identifiant}}</u></strong>!
+    </h1>
+  </div>
+
+  <div id="content" class="container">
+    <div class="row w-100 justify-content-center">
+      <div class="row justify-content-center m-auto p-1 w-75 h-auto text-center">
+        <div class="col-sm-11 align-items-center">
+          <div id="articles" class="container list-group-item clearfix m-1 border border-dark justify-content-center">
+            <div class="col text-center justify-content-center">
+              <h4 class="font-weight-bolder text-dark">Titre :</h4>
+              <h2 class="list-group-item-heading text-light border border-dark w-100 text-center rounded m-auto bg-primary">
+                {{titre}}
+              </h2>
+              <h4 class="font-weight-bolder text-dark mt-3 p-2">Identifiant :</h4>
+              <h2 class="list-group-item-heading text-light border border-dark w-100 text-center rounded m-auto bg-primary">
+                {{identifiant}}
+              </h2>
+              <h4 class="font-weight-bolder text-dark mt-3 p-2">Auteur :</h4>
+              <h2 class="list-group-item-heading text-light border border-dark w-100 text-center rounded m-auto bg-primary">
+                {{auteur}}
+              </h2>
+              <h5 class="font-weight-bold text-dark mt-3 p-2">
+                Date de publication :
+                <a class=" font-weight-bold text-danger">{{date_publication}}</a>
+              </h5>
+              <h4 class="font-weight-bolder text-dark mt-1 p-2">Article :</h4>
+              <p id="paragraphe-article" class="bg-light list-group-item-text border border-dark rounded p-1 text-left font-weight-bold m-auto">
+                {{paragraphe}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

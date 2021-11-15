@@ -1,0 +1,152 @@
+{% extends "default.html" %} {% block content %}
+<div id="body-home">
+  <div class="row justify-content-center mt-5 mb-3">
+    <div id="welcome" class="container display-2 text-dark border border-dark text-center rounded-pill m-1 p-1">
+      Bienvenue!
+    </div>
+  </div>
+
+  {%if search%}
+  <div class="row justify-content-center">
+    <h3 id="msg-created" class="container w-auto h-auto border border-dark text-center rounded mt-3 p-2">
+      Voici les resultat de votre recherche!
+    </h3>
+  </div>
+  {%else%}
+  <div class="row justify-content-center mt-4">
+    <h3 id="msg-welcome" class="container w-auto h-auto border border-dark text-center rounded mt-3 p-2">
+      Voici les cinq derniers articles publiés à ce jour!
+    </h3>
+  </div>
+  {%endif%}
+
+  <!-- error msg -->
+  {%if msg%}
+  <div class="row justify-content-center">
+    <h3 id="msg-created" class="container w-auto h-auto border border-dark text-center rounded mt-3 p-2">{{msg}}</h3>
+  </div>
+  {%endif%} {%if not search%}
+  <!-- search bar -->
+  <div id="search-bar" class="container">
+    <form
+      id="search-form"
+      class="form-group mt-1 p-1"
+      method="post"
+      action="/"
+      enctype="multipart/form-data"
+      class="form-group"
+    >
+      <span for="search" class="font-weight-bold text-light bg-primary border border-dark rounded"
+        >Faire une recherche dans la base de données :</span
+      >
+      <input
+        id="search"
+        name="search"
+        type="text"
+        placeholder="Rechercher"
+        class="form-control border border-dark rounded text-dark"
+      />
+    </form>
+  </div>
+  {%endif%}
+
+  <!-- articles -->
+  {%for article in articles%}
+  <div id="content" class="container w-auto h-auto m-auto p-1">
+    <div class="row w-auto justify-content-center">
+      <div class="justify-content-center m-auto p-1 w-auto h-auto text-center">
+        <div class="col align-items-center">
+          <div id="articles" class="container list-group-item clearfix m-2 border border-dark justify-content-center">
+            <div class="col text-center justify-content-center">
+              {%if not search%}
+              <h4 class="font-weight-bolder text-dark h-auto mt-1 p-1">Titre :</h4>
+              <h2
+                class="
+                  list-group-item-heading
+                  text-light
+                  bg-info
+                  border border-dark
+                  w-auto
+                  h-auto
+                  text-center
+                  rounded
+                  m-auto
+                "
+              >
+                {{article['titre']}}
+              </h2>
+              {%else%}
+              <h4 class="font-weight-bolder text-dark h-auto mt-1 p-1">Titre :</h4>
+              <a
+                href="/article/{{article['identifiant']}}"
+                class="
+                  list-group-item-heading
+                  text-light
+                  bg-info
+                  border border-dark
+                  w-auto
+                  h-auto
+                  text-center
+                  rounded
+                  m-auto
+                "
+              >
+                {{article['titre']}}
+              </a>
+              {%endif%} {%if not search%}
+              <h4 class="font-weight-bolder text-dark h-auto mt-1 p-1">Identifiant :</h4>
+              <h2
+                class="
+                  list-group-item-heading
+                  text-light
+                  bg-info
+                  border border-dark
+                  w-auto
+                  h-auto
+                  text-center
+                  rounded
+                  m-auto
+                "
+              >
+                {{article['identifiant']}}
+              </h2>
+              {%endif%} {%if not search%}
+              <h4 class="font-weight-bolder text-dark h-auto mt-1 p-1">Auteur :</h4>
+              <h2
+                class="
+                  list-group-item-heading
+                  text-light
+                  bg-info
+                  border border-dark
+                  w-auto
+                  h-auto
+                  text-center
+                  rounded
+                  m-auto
+                "
+              >
+                {{article['auteur']}}
+              </h2>
+              {%endif%}
+              <h5 class="font-weight-bold text-dark mt-3 p-1">
+                <u>Date de publication</u> :
+                <span class="text-danger">{{article['date_publication']}}</span>
+              </h5>
+              {%if not search%}
+              <h4 class="font-weight-bolder text-dark h-auto mt-0 p-1">Paragraphe :</h4>
+              <div
+                id="paragraphe-home"
+                class="container text-left text-dark border border-dark bg-light rounded shadow-lg align-self-center"
+              >
+                {{article['paragraphe']}}
+              </div>
+              {%endif%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+{% endblock content %}

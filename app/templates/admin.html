@@ -1,0 +1,58 @@
+{% extends "default.html" %} {% block content %}
+<div id="body-admin">
+  <div class="row justify-content-center m-1">
+    <h1 id="title-admin" class="container display-3 border border-dark text-center rounded-pill m-3 p-2">
+      🛠 Administrateur ⚙️
+    </h1>
+  </div>
+
+  <div class="container text-center m-auto p">
+    <div id="msg-admin" class="container border border-dark text-center rounded">
+      Voici la liste de tous les articles disponibles!
+    </div>
+
+    {%if msg%}
+    <div id="msg-modified" class="container border border-dark text-center rounded">
+      {{msg}}
+    </div>
+    {%endif%}
+
+    <a id="btn-create" href="/admin-nouveau" class="btn border border-dark text-center mb-3 p-3">
+      ➕Créer un nouvel article
+    </a>
+  </div>
+
+  <table
+    id="table-articles"
+    class="p-auto m-auto container table table-dark table-bordered table-striped table w-auto h-auto text-center"
+  >
+    <caption>
+      <thead>
+        <tr>
+          <th id="titres">Titres</th>
+          <th id="dates">Dates de publication</th>
+          <th id="liens">Liens</th>
+        </tr>
+      </thead>
+    </caption>
+    <tbody>
+      {% for article in articles %}
+      <tr>
+        <td>{{ article['titre'] }}</td>
+        <td>{{ article['date_publication'] }}</td>
+        <td>
+          <a
+            id="btn-modify"
+            href="/admin/{{ article['identifiant'] }}"
+            class="btn btn-warning border border-dark font-weight-bolder text-center m-2 p-2 w-auto"
+          >
+            📝Modifier l'article
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
