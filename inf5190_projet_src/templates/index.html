@@ -1,0 +1,22 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block metas %}
+    {{ super() }}
+    <meta charset="UTF-8"/>
+    <meta name="Carl Montpetit"
+          content="INF5190-Project"/>
+{% endblock metas %}
+
+{% block body %}
+    {{ super() }}
+    {% include "footer.html" %}
+{% endblock body %}
+
+{% block navbar %}
+    {{ super() }}
+    {% include "navbar.html" %}
+{% endblock navbar %}
+
+{% block content %}{% endblock content %}

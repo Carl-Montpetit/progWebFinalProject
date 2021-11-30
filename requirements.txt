@@ -1,13 +1,512 @@
-click==8.0.1
+# Another ISO 8601 parser for Python
+# https://pypi.org/project/aniso8601/
+aniso8601==9.0.1
+
+# Schedule when exute python code
+# https://www.techcoil.com/blog/how-to-use-flask-apscheduler-in-your-python-3-flask-application-to-run-multiple-tasks-in-parallel-from-a-single-http-request/
+APScheduler==3.8.1
+
+# define a set of attributes that will be applied later to a class or object
+# https://flask-restful-dry.readthedocs.io/en/latest/attrs.html
+attrs==21.2.0
+
+# building OAuth and OpenID Connect servers
+# https://docs.authlib.org/en/latest/
+Authlib==0.15.5
+
+# ❌ A minimalist web application for Mozilla cloud services that does 99% of
+# what you'll need to run stuff in prod. (uses postgres)
+# https://github.com/mozilla-services/bare-necessities
+BareNecessities==0.2.8
+
+# provides bcrypt hashing utilities for security (not the best)
+# https://flask-bcrypt.readthedocs.io/en/latest/
+bcrypt==3.2.0
+
+# Blinker provides a fast dispatching system that allows any number of
+# interested
+# parties to subscribe to events, or “signals”.
+# Signal receivers can subscribe to specific senders or receive signals sent
+# by any sender.
+# Flask will detect and use them if you install them
+# https://pypi.org/project/blinker/
+blinker==1.4
+
+# Boto3 is the Amazon Web Services (AWS) Software Development Kit (SDK) for
+# Python, which allows Python developers to write software that makes use of
+# services like Amazon S3 and Amazon EC2
+#
+# https://aws.amazon.com/sdk-for-python/
+# https://pypi.org/project/boto3/
+# https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+boto3==1.19.12
+botocore==1.22.12
+
+# provides Mozilla’s carefully curated collection of Root Certificates for
+# validating the trustworthiness of SSL certificates while verifying the
+# identity of TLS hosts
+#
+# https://pypi.org/project/certifi/
+certifi==2021.10.8
+
+# Interact with almost any C code from Python, based on C-like declarations that
+# you can often copy-paste from header files or documentation.
+#
+# https://cffi.readthedocs.io/en/latest/
+cffi==1.15.0
+
+# This library aim to assist you in finding what encoding suit the best to
+# content.
+# It DOES NOT try to uncover the originating encoding
+# Encoding detection on a stream, bytes or file.
+# Transpose any encoded content to Unicode the best we can.
+# Detect spoken language in text.
+#
+# https://github.com/ousret/charset_normalizer
+charset-normalizer==2.0.7
+
+# It’s the “Command Line Interface Creation Kit”
+# It aims to make the process of writing command line tools quick and fun while
+# also preventing any frustration caused by the inability to implement an
+# intended CLI API
+# It provides the flask command and allows adding custom management commands.
+#
+# https://pypi.org/project/click/
+click==8.0.3
+
+# cryptography is a package which provides cryptographic recipes and primitives
+# to Python developers
+#
+# https://pypi.org/project/cryptography/
+cryptography==35.0.0
+
+# csvalidate is a minimal library for reading from and writing to csv with an
+# added layer of validation
+#
+# https://libraries.io/pypi/csvalidate
+csvalidate==1.1.1
+
+# For class of object with decorator
+# https://pypi.org/project/dataclasses/
+dataclasses==0.6
+
+# Converts a Python dictionary or other native data type into a valid XML
+# string.
+#
+# https://pypi.org/project/dicttoxml/
+dicttoxml==1.7.4
+
+# dnspython is a DNS toolkit for Python
+#
+# https://pypi.org/project/dnspython/
+dnspython==2.1.0
+
+# Docutils is a modular system for processing documentation into useful
+# formats, such as HTML, XML, and LaTeX
+#
+# https://pypi.org/project/docutils/
+docutils==0.18
+
+# ❌ Python library for creating and manipulating HTML documents using an
+# elegant
+# DOM API. It allows you to write HTML pages in pure Python
+#
+# https://pypi.org/project/dominate/
 dominate==2.6.0
-Flask==2.0.1
+
+# This library validates that a string is of the form name@example.com.
+# This is the sort of validation you would want for an email-based login form
+# on a website.
+#
+# https://pypi.org/project/email-validator/
+email-validator==1.1.3
+
+# implements a platform independent file lock in Python,
+# which provides a simple way of inter-process communication
+#
+# https://py-filelock.readthedocs.io/en/latest/index.html
+filelock==3.3.2
+
+# Flask is a micro web framework written in Python.
+# It is classified as a microframework because it does not require particular
+# tools or libraries.
+#
+# https://flask.palletsprojects.com/en/2.0.x/
+Flask==2.0.2
+
+# provides bcrypt hashing utilities for your application
+#
+# https://flask-bcrypt.readthedocs.io/en/latest/
+Flask-Bcrypt==0.7.1
+
+# It can also create links to serve Bootstrap from a CDN
+#
+# https://pythonhosted.org/Flask-Bootstrap/
 Flask-Bootstrap==3.3.7.1
+
+# Easily render(translate to) CSVs within any flask application
+#
+# https://pypi.org/project/Flask-CSV/
+Flask-CSV==1.2.0
+
+# This extension makes it easy to validate JSON data that is sent to your Flask
+# app using the jsonschema spec
+#
+# https://pypi.org/project/flask-json-schema/
+Flask-json-schema==0.0.5
+
+# Flask-Login provides user session management for Flask. It handles the common
+# tasks of logging in, logging out, and remembering your users’ sessions over
+# extended periods of time.
+#
+# Store the active user’s ID in the session, and let you log them in and out
+# easily.
+# Let you restrict views to logged-in (or logged-out) users.
+# Handle the normally-tricky “remember me” functionality.
+# Help protect your users’ sessions from being stolen by cookie thieves.
+# Possibly integrate with Flask-Principal or other authorization extensions
+# later on.
+#
+# https://flask-login.readthedocs.io/en/latest/
+Flask-Login==0.5.0
+
+# provides a simple interface to set up SMTP with your Flask application and to
+# send messages from your views and scripts.
+#
+# https://pythonhosted.org/Flask-Mail/
+Flask-Mail==0.9.1
+
+# an object serialization/deserialization library
+#
+# https://flask-marshmallow.readthedocs.io/en/latest/
+# https://pypi.org/project/flask-marshmallow/
+flask-marshmallow==0.14.0
+
+# adds support for quickly building REST APIs. It is a lightweight abstraction
+# that works with your existing ORM/libraries. Flask-RESTful encourages best
+# practices with minimal setup. If you are familiar with Flask, Flask-RESTful
+# should be easy to pick up.
+#
+# https://flask-restful.readthedocs.io/en/latest/
+Flask-RESTful==0.3.9
+
+# It aims to simplify using SQLAlchemy with Flask by providing useful defaults
+# and extra helpers that make it easier to accomplish common tasks.
+#
+# https://flask-sqlalchemy.palletsprojects.com/en/2.x/
 Flask-SQLAlchemy==2.5.1
+
+# Form protection tools
+#
+# Integration with WTForms.
+# Secure Form with CSRF token.
+# Global CSRF protection.
+# reCAPTCHA support.
+# File upload that works with Flask-Uploads.
+# Internationalization using Flask-Babel.
+#
+# https://flask-wtf.readthedocs.io/en/1.0.x/
+Flask-WTF==0.15.1
+
+# Gevent makes it Asynchronous by using context switching and events
+#
+# https://pypi.org/project/greenlet/
 greenlet==1.1.2
+
+# Support for the Internationalised Domain Names in Applications (IDNA) protocol
+# as specified in RFC 5891. This is the latest version of the protocol and is
+# sometimes referred to as “IDNA 2008”.
+#
+# https://pypi.org/project/idna/
+idna==3.3
+
+# is a library which provides an API for accessing an installed package’s
+# metadata (see PEP 566), such as its entry points or its top-level name
+#
+# https://importlib-metadata.readthedocs.io/en/latest/
+importlib-metadata==4.8.1
+
+# iniconfig is a small and simple INI-file parser module having a unique set
+# of features:
+#
+# https://pypi.org/project/iniconfig/
+iniconfig==1.1.1
+
+# Sometimes you want to send some data to untrusted environments, then get it
+# back later. To do this safely, the data must be signed to detect changes.
+# Given a key only you know, you can cryptographically sign your data and hand
+# it over to someone else. When you get the data back you can ensure that
+# nobody tampered with it.
+# The receiver can see the data, but they can not modify it unless they also
+# have your key. So if you keep the key secret and complex, you will be fine.
+#
+# https://itsdangerous.palletsprojects.com/en/2.0.x/
 itsdangerous==2.0.1
-Jinja2==3.0.1
+
+# templating
+#
+# https://jinja.palletsprojects.com/en/3.0.x/templates/
+Jinja2==3.0.2
+
+
+# ??????????????
+jmespath==0.10.0
+
+# This extension makes it easy to validate JSON data that is sent to your Flask
+# app using the jsonschema spec
+#
+# https://pypi.org/project/flask-json-schema/
+jsonschema==4.2.1
+
+# Simple wrapper over Python’s email package for common operations.
+#
+# https://pypi.org/project/Mail/
+Mail==2.1.0
+
+# MarkupSafe implements a text object that escapes characters so it is safe to
+# use in HTML and XML. Characters that have special meanings are replaced so
+# that they display as the actual characters. This mitigates injection
+# attacks, meaning untrusted user input can safely be displayed on a page.
+#
+# https://pypi.org/project/MarkupSafe/
 MarkupSafe==2.0.1
-pycodestyle==2.8.0
-SQLAlchemy==1.4.25
+
+# marshmallow is an ORM/ODM/framework-agnostic library for converting complex
+# datatypes, such as objects, to and from native Python datatypes.
+#
+# https://pypi.org/project/marshmallow/
+marshmallow==3.14.0
+
+# SQLAlchemy integration with the marshmallow (de)serialization library.
+#
+# https://marshmallow-sqlalchemy.readthedocs.io/en/latest/
+marshmallow-sqlalchemy==0.26.1
+
+
+# https://oauthlib.readthedocs.io/en/latest/
+# https://buildmedia.readthedocs.org/media/pdf/oauthlib/latest/oauthlib.pdf
+oauthlib==3.1.1
+
+# This library provides utilities that implement the interoperability
+# specifications which have clearly one correct behaviour (eg: PEP 440) or
+# benefit greatly from having a single shared implementation (eg: PEP 425).
+# The packaging project includes the following: version handling, specifiers,
+# markers, requirements, tags, utilities.
+#
+# https://pypi.org/project/packaging/
+packaging==21.2
+
+# https://pypi.org/project/pluggy/
+# https://pluggy.readthedocs.io/en/latest/
+pluggy==1.0.0
+
+# The py lib is a Python development support library featuring the following
+# tools and modules:
+# py.path: uniform local and svn path objects -> please use pathlib/pathlib2
+# instead
+# py.apipkg: explicit API control and lazy-importing -> please use the
+# standalone package instead
+# py.iniconfig: easy parsing of .ini files -> please use the standalone
+# package instead
+# py.code: dynamic code generation and introspection (deprecated, moved to
+# pytest as a implementation detail).
+#
+# https://pypi.org/project/py/
+py==1.11.0
+
+# pycparser is a complete parser of the C language, written in
+# pure Python using the PLY parsing library. It parses C code into an AST and
+# can serve as a front-end for C compilers or analysis tools.
+# a parser for the C language, written in pure Python. It is a module designed
+# to be easily integrated into applications that need to parse C source code.
+# https://pypi.org/project/pycparser/
+pycparser==2.20
+
+# PyCryptodome is a self-contained Python package of low-level cryptographic
+# primitives.
+#
+# https://pycryptodome.readthedocs.io/en/latest/
+pycryptodome==3.11.0
+
+# an alternative approach to creating and executing simple grammars, vs. the
+# traditional lex/yacc approach, or the use of regular expressions. The
+# pyparsing module provides a library of classes that client code uses to
+# construct the grammar directly in Python code.
+#
+# https://pypi.org/project/pyparsing/
+pyparsing==2.4.7
+
+# Pyrsistent is a number of persistent collections (by some referred to as
+# functional data structures). Persistent in the sense that they are immutable.
+#
+# https://pypi.org/project/pyrsistent/
+pyrsistent==0.18.0
+
+# The pytest framework makes it easy to write small tests, yet scales to
+# support complex functional testing for applications and libraries.
+#
+# https://docs.pytest.org/en/6.2.x/
+pytest==6.2.5
+
+# provides powerful extensions to the standard datetime module, available in
+# Python
+#
+# https://pypi.org/project/python-dateutil/
+python-dateutil==2.8.2
+
+# Python-dotenv reads key-value pairs from a .env file and can set them as
+# environment variables. It helps in the development of applications following
+# the 12-factor principles.
+#
+# https://pypi.org/project/python-dotenv/
+python-dotenv==0.19.1
+
+# pytz brings the Olson tz database into Python. This library allows accurate
+# and cross platform timezone calculations using Python 2.4 or higher. It also
+# solves the issue of ambiguous times at the end of daylight saving time,
+# which you can read more about in the Python Library Reference (datetime
+# .tzinfo).
+#
+# https://pypi.org/project/pytz/
+pytz==2021.3
+pytz-deprecation-shim==0.1.0.post0
+
+# YAML is a data serialization format designed for human readability and
+# interaction with scripting languages. PyYAML is a YAML parser and emitter
+# for Python.
+#
+# https://pypi.org/project/PyYAML/
+PyYAML==6.0
+
+# Requests is a simple, yet elegant, HTTP library.
+#
+# https://pypi.org/project/requests/
+requests==2.26.0
+
+# https://pypi.org/project/requests-oauthlib/
+requests-oauthlib==1.3.0
+
+# S3transfer is a Python library for managing Amazon S3 transfers.
+#
+# https://pypi.org/project/s3transfer/
+# https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3.html#using-the-transfer-manager
+s3transfer==0.5.0
+
+# Secret is for storing secrets. Backed by Amazon Web Services: IAM for
+# access policies, KMS for encryption keys and S3 for storage
+#
+# https://libraries.io/pypi/secret
+secret==0.8
+
+# It provides utility functions for smoothing over the differences between
+# the Python versions with the goal of writing Python code that is compatible
+# on both Python versions. See the documentation for more information on what
+# is provided.
+#
+# https://pypi.org/project/six/
+# https://six.readthedocs.io
+six==1.16.0
+
+# Python SQL toolkit and Object Relational Mapper that gives application
+# developers the full power and flexibility of SQL. SQLAlchemy provides a full
+# suite of well known enterprise-level persistence patterns, designed for
+# efficient and high-performing database access, adapted into a simple and
+# Pythonic domain language.
+#
+# https://pypi.org/project/SQLAlchemy/
+# https://docs.sqlalchemy.org/en/14/
+SQLAlchemy==1.4.26
+
+# Pretty-print tabular data in Python, a library and a command-line utility.
+# printing small tables without hassle: just one function call, formatting is
+# guided by the data itself
+# authoring tabular data for lightweight plain-text markup: multiple output
+# formats suitable for further editing or transformation
+# readable presentation of mixed textual and numeric data: smart column
+# alignment, configurable number formatting, alignment by a decimal point
+#
+# https://pypi.org/project/tabulate/
+tabulate==0.8.9
+
+# A Python library for parsing and creating TOML.
+#
+# https://en.wikipedia.org/wiki/TOML
+# https://pypi.org/project/toml/
+toml==0.10.2
+
+# Twitter for Python!
+#
+# https://pypi.org/project/tweepy/
+# https://docs.tweepy.org/en/latest/
+tweepy==4.3.0
+
+# Python library providing an easy way to access Twitter data. Supports
+# Python 3. It's been battle tested by companies, educational institutions and
+# individuals alike
+#
+# https://pypi.org/project/twython/
+twython==3.9.1
+
+# This is a Python package containing zic-compiled binaries for the IANA time
+# zone database. It is intended to be a fallback for systems that do not have
+# system time zone data installed (or don’t have it installed in a standard
+# location), as a part of PEP 615 \
+#
+# https://tzdata.readthedocs.io/en/latest/
+tzdata==2021.5
+
+# This Python module returns a tzinfo object (with a pytz_deprecation_shim,
+# for pytz compatibility) with the local timezone information, under Unix and
+# Windows.
+#
+# https://pypi.org/project/tzlocal/
+tzlocal==4.1
+
+# urllib3 is a powerful, user-friendly HTTP client for Python. Much of the
+# Python ecosystem already uses urllib3 and you should too. urllib3 brings
+# many critical features that are missing from the Python standard libraries:
+# Thread safety.
+# Connection pooling.
+# Client-side SSL/TLS verification.
+# File uploads with multipart encoding.
+# Helpers for retrying requests and dealing with HTTP redirects.
+# Support for gzip, deflate, and brotli encoding.
+# Proxy support for HTTP and SOCKS.
+# 100% test coverage.
+#
+# https://pypi.org/project/urllib3/
+urllib3==1.26.7
+
+# A tiny library to facilitate visitor implementation in Python
+#
+# https://pypi.org/project/visitor/
 visitor==0.1.3
-Werkzeug==2.0.1
+
+# An interactive debugger that allows inspecting stack traces and source code
+# in the browser with an interactive interpreter for any frame in the stack.
+# A full-featured request object with objects to interact with headers, query
+# args, form data, files, and cookies.
+# A response object that can wrap other WSGI applications and handle streaming data.
+# A routing system for matching URLs to endpoints and generating URLs for
+# endpoints, with an extensible system for capturing variables from URLs.
+# HTTP utilities to handle entity tags, cache control, dates, user agents,
+# cookies, files, and more.
+# A threaded WSGI server for use while developing applications locally.
+# A test client for simulating HTTP requests during testing without requiring
+# running a server.
+#
+# https://pypi.org/project/Werkzeug/
+Werkzeug==2.0.2
+
+# WTForms is a flexible forms validation and rendering library for Python web
+# development. It can work with whatever web framework and template engine you
+# choose. It supports data validation, CSRF protection, internationalization
+# (I18N), and more. There are various community libraries that provide closer
+# integration with popular frameworks.
+#
+# https://pypi.org/project/WTForms/
+WTForms==2.3.3
+
+# https://pypi.org/project/zipp/
+# https://docs.python.org/3.8/library/zipfile.html#path-objects
+zipp==3.6.0

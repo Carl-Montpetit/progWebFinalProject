@@ -1,0 +1,90 @@
+{% extends "index.html" %} {% block content %}
+<div id="body-admin-new">
+  <div class="pt-4 row justify-content-center">
+    <h1
+      class="h-auto p-2 m-1 text-center border  display-4 text-light border-dark bg-primary rounded-pill w-50 font-weight-bolder"
+    >
+      Modification de l'article <u><strong>{{ titre }}</strong></u>
+    </h1>
+  </div>
+  {% if err %}
+  <div class="container h-auto text-center border rounded alert-danger border-dark w-25">{{ err }}</div>
+  {% endif %}
+  <div class="w-auto h-auto row justify-content-center">
+    <div id="article-modify" class="m-4 text-center col-3 px-lg-4">
+      <p
+        id="article"
+        class="w-auto h-auto p-2 mx-auto mt-4 border  display-4 col-md-12 bg-dark text-light font-weight-bolder border-dark rounded-pill row justify-content-center"
+      >
+        {{ titre }} 📰
+      </p>
+      <form
+        id="article-form"
+        class="w-auto h-auto p-2 m-2 m-auto form-group"
+        method="post"
+        action="/admin/{{ identifiant }}"
+      >
+        <label class="text-center font-weight-bold" for="titre">Titre : Actuellement👇</label>
+        <div class="container w-auto m-1 border bg-dark text-light border-dark">
+          <p>{{ titre }}</p>
+        </div>
+        <input
+          type="text"
+          id="titre"
+          class="w-auto m-auto border col-md-12 form-control border-dark"
+          name="titre"
+          placeholder="Entrez le nouveau titre"
+        />
+        {% if err and err_titre %}
+        <div class="mt-1 text-center alert-danger small rounded-pill">
+          ⚠️Svp, veuillez entrer un <strong>titre</strong> <u>valide</u>!..
+        </div>
+        {% endif %}
+        <label id="paragraphe-old" class="text-center font-weight-bold" for="paragraphe"
+          >Paragraphe : Actuellement👇</label
+        >
+        <div id="paragraphe-old-modify" class="container w-auto m-1 border bg-dark text-light border-dark">
+          <p>{{ paragraphe }}</p>
+        </div>
+        <textarea
+          rows="3"
+          cols="40"
+          id="paragraphe"
+          class="w-auto m-auto border shadow col-md-12 form-control border-dark"
+          name="paragraphe"
+          placeholder="Entrez le nouveau paragraphe ici"
+        ></textarea>
+        {% if err and paragraphe %}
+        <div class="mt-1 text-center alert-danger small rounded-pill">
+          ⚠️Svp, veuillez entrer un
+          <strong>paragraphe</strong> pour l'article <u>valide</u>!..
+        </div>
+        {% endif %}
+        <input
+          class="w-auto mx-1 mt-3 mr-2 border col-md-12 form-control btn btn-warning border-dark text-dark"
+          type="submit"
+          id="submit-article"
+          name="submit-article"
+          value="Modifier"
+        />
+        <input
+          class="w-auto mx-1 mt-3 ml-2 border col-md-12 form-control btn btn-danger border-dark text-light"
+          type="reset"
+          id="reset-article"
+          name="reset-article"
+          value="Réinitialiser"
+        />
+        <a
+          class="container w-auto mx-1 mt-3 ml-2 border  col-md-12 form-control btn btn-light border-dark text-dark bg-danger"
+          type="reset"
+          href="/admin"
+          id="reset-article"
+          name="reset-article"
+          value="Canceller"
+          >Canceller</a
+        >
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

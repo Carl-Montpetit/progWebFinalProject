@@ -1,0 +1,132 @@
+{% extends "index.html" %} {% block content %}
+<div id="body-admin-new">
+  <br />
+  <div class="p-1 row justify-content-center">
+    <h1
+      class="w-auto h-auto p-2 my-4 text-center border  display-3 text-light border-dark bg-primary rounded-pill font-weight-bolder"
+    >
+      Création d'un nouvel article
+    </h1>
+  </div>
+
+  {% if err %}
+  <div class="container h-auto text-center border rounded alert-danger border-dark w-25">{{ err }}</div>
+  {% endif %}
+
+  <div class="w-auto h-auto p-1 row mt-lg-4 justify-content-center">
+    <div id="article-create" class="w-auto h-auto mt-4 text-center col-3 px-lg-2">
+      <p
+        id="article"
+        class="h-auto p-2 mx-auto mt-4 border  display-4 col-md-12 bg-dark text-light font-weight-bolder border-dark rounded-pill w-75 row justify-content-center"
+      >
+        Article 📰
+      </p>
+      <form
+        id="article-form"
+        class="w-auto h-auto p-2 m-2 m-auto form-group"
+        method="post"
+        action="/admin-nouveau"
+        enctype="multipart/form-data"
+        class="form-group"
+      >
+        <label class="text-center font-weight-bold" for="titre">Titre :</label>
+        <input
+          type="text"
+          id="titre"
+          class="w-auto m-auto border col-md-12 form-control border-dark"
+          name="titre"
+          value="{{ titre }}"
+          placeholder="Entrez le titre de l'article"
+          required
+        />
+        {% if err and err_titre %}
+        <div class="container mt-1 text-center alert-danger small rounded-pill w-50">
+          ⚠️Svp, veuillez entrer un <strong>titre</strong> <u>valide</u>!..
+        </div>
+        {% endif %}
+        <label class="text-center font-weight-bold" for="identifiant">Identifiant :</label>
+        <input
+          type="text"
+          id="identifiant"
+          class="w-auto m-auto border col-md-12 form-control border-dark"
+          name="identifiant"
+          value="{{ identifiant }}"
+          placeholder="Entrez l'identifiant"
+          required
+        />
+        {% if err and err_identifiant %}
+        <div class="container mt-1 text-center alert-danger small rounded-pill w-50">
+          ⚠️Svp, veuillez entrer un
+          <strong>identifiant</strong> <u>valide</u>!..
+        </div>
+        {% endif %}
+        <label class="text-center font-weight-bold" for="titre">Auteur :</label>
+        <label for="auteur"></label
+        ><input
+          type="text"
+          id="auteur"
+          class="w-auto m-auto border col-md-12 form-control border-dark"
+          name="auteur"
+          value="{{ auteur }}"
+          placeholder="Entrez le nom de l'auteur"
+          required
+        />
+        {% if err and err_auteur %}
+        <div class="container mt-1 text-center alert-danger small rounded-pill w-50">
+          ⚠️Svp, veuillez entrer un nom d'<strong>auteur</strong> <u>valide</u>!..
+        </div>
+        {% endif %}
+        <label class="text-center font-weight-bold" for="date_publication"> Date de publication :</label>
+        <input
+          type="date"
+          id="date_publication"
+          class="w-auto m-auto border col-md-12 form-control border-dark"
+          name="date_publication"
+          value="{{ date_publication }}"
+          placeholder="Entrez la date de publication"
+          required
+        />
+        {% if err and err_date_validation %}
+        <div class="container mt-1 text-center alert-danger small rounded-pill w-50">
+          ⚠️Svp, veuillez entrer une <strong>date</strong> de publication <u>valide</u>!..
+        </div>
+        {% endif %}
+        <label class="text-center font-weight-bold" for="paragraphe">Paragraphe :</label>
+        <textarea
+          maxlength="500"
+          rows="4"
+          cols="40"
+          id="paragraphe"
+          class="w-auto m-auto border shadow col-md-12 form-control border-dark"
+          name="paragraphe"
+          form="article-form"
+          placeholder="Entrez le paragraphe de l'article ici"
+          required
+        >
+{{ paragraphe }}</textarea
+        >
+        {% if err and err_paragraphe %}
+        <div class="container mt-1 text-center alert-danger small rounded-pill w-50">
+          ⚠️Svp, veuillez entrer un
+          <strong>paragraphe</strong> pour l'article <u>valide</u>!..
+        </div>
+        {% endif %}
+        <input
+          class="w-auto mx-1 mt-3 mr-2 border col-md-12 form-control btn btn-success border-dark text-light"
+          type="submit"
+          id="submit-article"
+          name="submit-article"
+          value="Créer"
+        />
+        <input
+          class="w-auto mx-1 mt-3 ml-2 border col-md-12 form-control btn btn-danger border-dark text-light"
+          type="reset"
+          id="reset-article"
+          name="reset-article"
+          value="Réinitialiser"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

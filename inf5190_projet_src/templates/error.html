@@ -1,0 +1,23 @@
+{% extends "index.html" %} {% block title %}error{% endblock title %} {% block content %}
+<br />
+<br />
+<div class="container p-2 m-auto border rounded shadow-lg bg-dark border-danger">
+  <h4 class="container p-4 w-75 text-danger text-centered font-weight-bold">{{ error }}<br /></h4>
+  <br />
+  <hr />
+  <br />
+  <h3 class="text-center text-info font-weight-bold">Veuillez réessayer!</h3>
+  <h3 class="container text-center align-self-center">
+    <div class="text-center">👇</div>
+    <a
+      class="p-2 m-2 border btn btn-success border-light text-light justify-content-center font-weight-bolder"
+      href="/"
+    >
+      ↻Clicker Ici!
+    </a>
+  </h3>
+  <br />
+  <br />
+  <h1 class="text-center text-warning font-weight-bold">Merci!🙂</h1>
+</div>
+{% endblock content %}

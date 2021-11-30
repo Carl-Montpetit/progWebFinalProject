@@ -1,0 +1,55 @@
+{% extends "index.html" %} {% block content %}
+<div id="body-home">
+  <div class="mt-5 mb-3 row justify-content-center">
+    <h1
+      class="container p-2 m-3 text-center border rounded  w-50 display-3 text-light border-dark bg-info font-weight-bolder"
+    >
+      Voici l'article du lien
+      <strong><u>{{ identifiant }}</u></strong
+      >!
+    </h1>
+  </div>
+
+  <div id="content" class="container">
+    <div class="row w-100 justify-content-center">
+      <div class="h-auto p-1 m-auto text-center row justify-content-center w-75">
+        <div class="col-sm-11 align-items-center">
+          <div id="articles" class="container clearfix m-1 border list-group-item border-dark justify-content-center">
+            <div class="text-center col justify-content-center">
+              <h4 class="font-weight-bolder text-dark">Titre :</h4>
+              <h2
+                class="m-auto text-center border rounded  list-group-item-heading text-light border-dark w-100 bg-primary"
+              >
+                {{ titre }}
+              </h2>
+              <h4 class="p-2 mt-3 font-weight-bolder text-dark">Identifiant :</h4>
+              <h2
+                class="m-auto text-center border rounded  list-group-item-heading text-light border-dark w-100 bg-primary"
+              >
+                {{ identifiant }}
+              </h2>
+              <h4 class="p-2 mt-3 font-weight-bolder text-dark">Auteur :</h4>
+              <h2
+                class="m-auto text-center border rounded  list-group-item-heading text-light border-dark w-100 bg-primary"
+              >
+                {{ auteur }}
+              </h2>
+              <h5 class="p-2 mt-3 font-weight-bold text-dark">
+                Date de publication :
+                <a class="font-weight-bold text-danger">{{ date_publication }}</a>
+              </h5>
+              <h4 class="p-2 mt-1 font-weight-bolder text-dark">Article :</h4>
+              <p
+                id="paragraphe-article"
+                class="p-1 m-auto text-left border rounded bg-light list-group-item-text border-dark font-weight-bold"
+              >
+                {{ paragraphe }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

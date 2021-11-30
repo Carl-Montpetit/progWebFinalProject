@@ -1,30 +1,28 @@
-{% extends "default.html" %} {% block content %}
+{% extends "index.html" %} {% block content %}
 <div id="body-admin">
-  <div class="row justify-content-center m-1">
-    <h1 id="title-admin" class="container display-3 border border-dark text-center rounded-pill m-3 p-2">
+  <div class="m-1 row justify-content-center">
+    <h1 id="title-admin" class="container p-2 m-3 text-center border display-3 border-dark rounded-pill">
       🛠 Administrateur ⚙️
     </h1>
   </div>
 
-  <div class="container text-center m-auto p">
-    <div id="msg-admin" class="container border border-dark text-center rounded">
+  <div class="container m-auto text-center p">
+    <div id="msg-admin" class="container text-center border rounded border-dark">
       Voici la liste de tous les articles disponibles!
     </div>
 
-    {%if msg%}
-    <div id="msg-modified" class="container border border-dark text-center rounded">
-      {{msg}}
-    </div>
-    {%endif%}
+    {% if msg %}
+    <div id="msg-modified" class="container text-center border rounded border-dark">{{ msg }}</div>
+    {% endif %}
 
-    <a id="btn-create" href="/admin-nouveau" class="btn border border-dark text-center mb-3 p-3">
+    <a id="btn-create" href="/admin-nouveau" class="p-3 mb-3 text-center border btn border-dark">
       ➕Créer un nouvel article
     </a>
   </div>
 
   <table
     id="table-articles"
-    class="p-auto m-auto container table table-dark table-bordered table-striped table w-auto h-auto text-center"
+    class="container table w-auto h-auto m-auto text-center p-auto table-dark table-bordered table-striped"
   >
     <caption>
       <thead>
@@ -44,14 +42,13 @@
           <a
             id="btn-modify"
             href="/admin/{{ article['identifiant'] }}"
-            class="btn btn-warning border border-dark font-weight-bolder text-center m-2 p-2 w-auto"
+            class="w-auto p-2 m-2 text-center border btn btn-warning border-dark font-weight-bolder"
           >
             📝Modifier l'article
           </a>
         </td>
       </tr>
       {% endfor %}
-      
     </tbody>
   </table>
 </div>

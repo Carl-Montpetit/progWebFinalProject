@@ -1,8 +1,15 @@
 *.swp
 .vagrant
 .DS_Store
-__pycache__
-log.txt
 .vscode/*
 __pycache__
+log.txt
+.dist
+.idea
+LICENSE
+__pycache__
 __pycache__/*
+*.pdf
+*.db
+*.xml
+*.csv
