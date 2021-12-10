@@ -1,9 +1,7 @@
 import sqlite3
 import csv
-import urllib3
 import requests
-from datetime import datetime
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as elementTree
 
 ################################################################################
 # CONSTANTS
@@ -11,6 +9,8 @@ import xml.etree.ElementTree as ET
 URL_CSV_PISCINES_INSTALLATIONS_AQUATIQUES = "https://data.montreal.ca/dataset/4604afb7-a7c4-4626-a3ca-e136158133f2/resource/cbdca706-569e-4b4a-805d-9af73af03b14/download/piscines.csv"
 INSERT_PISCINES_INSTALLATIONS_AQUATIQUES = "INSERT INTO piscines_installations_aquatiques (id_uev, type, nom, arrondissement, adresse, propriete, gestion, point_x, point_y, equipement, longitude, latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
 DROP_PISCINES_INSTALLATIONS_AQUATIQUES = "DROP TABLE IF EXISTS piscines_installations_aquatiques;"
+DELETE_TITLES_ROW_PISCINES_INSTALLATIONS_AQUATIQUES = "DELETE FROM " \
+                                                     "piscines_installations_aquatiques WHERE id=1"
 CREATE_PISCINES_INSTALLATIONS_AQUATIQUES = "CREATE TABLE piscines_installations_aquatiques(id INTEGER PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100), nom VARCHAR(100), arrondissement VARCHAR(100), adresse VARCHAR(100), propriete VARCHAR(100), gestion VARCHAR(100), point_x INTEGER, point_y INTEGER, equipement VARCHAR(100), longitude INTEGER, latitude INTEGER);"
 URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-476f-95bd-a1ce1648a98c/resource/5d1859cc-2060-4def-903f-db24408bacd0/download/l29-patinoire.xml"
 INSERT_PATINOIRES = "INSERT INTO patinoires (nom_arr, nom_pat, date_heure, " \
@@ -52,7 +52,7 @@ def get_xml_data_from_url(url):
     with requests.Session() as s:
         response = s.get(url)
     decoded_content = response.content.decode('utf-8')
-    tree = ET.fromstring(decoded_content)
+    tree = elementTree.fromstring(decoded_content)
     return tree
 
 
@@ -65,7 +65,7 @@ def download_xml_file_from_url(url):
 
 
 def print_xml_tree(root):
-    print(ET.tostring(root, encoding='utf8').decode('utf8'))
+    print(elementTree.tostring(root, encoding='utf8').decode('utf8'))
     return 1
 
 
@@ -103,65 +103,38 @@ class Database:
         cursor = connection.cursor()
         rows = get_csv_data_from_url(URL_CSV_PISCINES_INSTALLATIONS_AQUATIQUES)
         cursor.executemany(INSERT_PISCINES_INSTALLATIONS_AQUATIQUES, rows)
+        cursor.execute(DELETE_TITLES_ROW_PISCINES_INSTALLATIONS_AQUATIQUES)
         connection.commit()
         connection.close()
         self.disconnect()
 
     def add_patinoires_data_to_database(self):
-        """add XML data from url to database"""
+        """add XML data from url to database : O(i*j*k) where i < j << k"""
         connection = self.get_connection()
         cursor = connection.cursor()
         root = get_xml_data_from_url(URL_XML_PATINOIRES)
-        final = []
         arrondissements = root.findall("arrondissement")
-        for index1, arrondissement in enumerate(arrondissements):
-            # print('arrondissement : ', len(arrondissement))
+        for arrondissement in arrondissements:
             nom_arr = arrondissement.find("nom_arr").text.strip()
             patinoires = arrondissement.find("patinoire")
-            # print('patinoires : ',len(patinoires))
             noms_pats = patinoires.findall("nom_pat")
-            # print('noms_pats : ', len(noms_pats))
             conditions = patinoires.findall("condition")
-            # print(conditions[0][0].text.strip()) # heure_date 1
-            # print(conditions[1][0].text.strip())
-            # print(conditions[3][0].text.strip())
-            # print(conditions[4][0].text.strip())
-            # print(conditions[0][1].text.strip()) # ouvert
-            # print(conditions[0][2].text.strip()) # deblaye
-            # print(conditions[0][3].text.strip()) # arrose
-            # print(conditions[0][4].text.strip()) # resurface
-            # print('conditions : ', len(conditions))
-            for index3, nom in enumerate(noms_pats):
+            for j, nom in enumerate(noms_pats):
                 nom_pat = nom.text.strip()
-                # if index3 == 0:
-                #     break
-                for i in range(int(len(conditions) / len(noms_pats))):
-                    date_heure = conditions[i + index3 * int(len(
+                for k in range(int(len(conditions) / len(noms_pats))):
+                    date_heure = conditions[k + j * int(len(
                         conditions) / len(noms_pats))][0].text.strip()
-                    ouvert = conditions[i + index3 * int(len(
+                    ouvert = conditions[k + j * int(len(
                         conditions) / len(noms_pats))][1].text.strip()
-                    deblaye = conditions[i + index3 * int(len(
+                    deblaye = conditions[k + j * int(len(
                         conditions) / len(noms_pats))][2].text.strip()
-                    arrose = conditions[i + index3 * int(len(
+                    arrose = conditions[k + j * int(len(
                         conditions) / len(noms_pats))][3].text.strip()
-                    resurface = conditions[i + index3 * int(len(
+                    resurface = conditions[k + j * int(len(
                         conditions) / len(noms_pats))][4].text.strip()
                     cursor.execute(INSERT_PATINOIRES, (
                         nom_arr, nom_pat, date_heure, ouvert, deblaye, arrose,
                         resurface))
-                # ouvert_list.append(condition.find("ouvert").text.strip())
-                # deblaye_list.append(condition.find("deblaye").text.strip())
-                # arrose_list.append(condition.find("arrose").text.strip())
-                # resurface_list.append(condition.find("resurface").text.strip())
-                # print(result)
-                # print(len(final))
-                # conditions
-                # if index4 == 0:
-                #         break
-            # arrondissements
-            # if index1 == 1:
-            #     break
-        print('final : ', len(final))
         connection.commit()
         connection.close()
         self.disconnect()
