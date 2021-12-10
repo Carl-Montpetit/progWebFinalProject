@@ -2,67 +2,83 @@ import sqlite3
 import csv
 import urllib3
 import requests
-import traceback
-import xml
-import dicttoxml
-import urllib3
+from datetime import datetime
+import xml.etree.ElementTree as ET
+
 ################################################################################
 # CONSTANTS
 ################################################################################
 URL_CSV_PISCINES_INSTALLATIONS_AQUATIQUES = "https://data.montreal.ca/dataset/4604afb7-a7c4-4626-a3ca-e136158133f2/resource/cbdca706-569e-4b4a-805d-9af73af03b14/download/piscines.csv"
-INSERT_PISCINES_INSTALLATIONS_AQUATIQUES = "INSERT INTO piscines (id_uev, type, nom, arrondissement, adresse, propriete, gestion, point_x, point_y, equipement, longitude, latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+INSERT_PISCINES_INSTALLATIONS_AQUATIQUES = "INSERT INTO piscines_installations_aquatiques (id_uev, type, nom, arrondissement, adresse, propriete, gestion, point_x, point_y, equipement, longitude, latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
 DROP_PISCINES_INSTALLATIONS_AQUATIQUES = "DROP TABLE IF EXISTS piscines_installations_aquatiques;"
-CREATE_PISCINES_INSTALLATIONS_AQUATIQUES = "CREATE TABLE piscines_installations_aquatiques(id INTEGER PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type varchar(100), nom varchar(100), arrondissement varchar(100), adresse varchar(100), propriete varchar(100), gestion varchar(100), point_x INTEGER, point_y INTEGER, equipement varchar(100), longitude INTEGER, latitude INTEGER);"
-URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-476f-95bd-a1ce1648a98c/resource/5d1859cc-2060- 4def-903f-db24408bacd0/download/l29-patinoire.xml"
-INSERT_PATINOIRES = ""
-DROP_PATINOIRES = ""
-CREATE_PATINOIRES = ""
+CREATE_PISCINES_INSTALLATIONS_AQUATIQUES = "CREATE TABLE piscines_installations_aquatiques(id INTEGER PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100), nom VARCHAR(100), arrondissement VARCHAR(100), adresse VARCHAR(100), propriete VARCHAR(100), gestion VARCHAR(100), point_x INTEGER, point_y INTEGER, equipement VARCHAR(100), longitude INTEGER, latitude INTEGER);"
+URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-476f-95bd-a1ce1648a98c/resource/5d1859cc-2060-4def-903f-db24408bacd0/download/l29-patinoire.xml"
+INSERT_PATINOIRES = "INSERT INTO patinoires (nom_arr, nom_pat, date_heure, " \
+                    "ouvert, deblaye, arrose, resurface) VALUES (?, ?, " \
+                    "?, ?, ?, ?, ?);"
+DROP_PATINOIRES = "DROP TABLE IF EXISTS patinoires;"
+CREATE_PATINOIRES = "CREATE TABLE patinoires(id INTEGER PRIMARY KEY " \
+                    "AUTOINCREMENT, nom_arr VARCHAR(200), nom_pat VARCHAR(" \
+                    "100), date_heure TEXT," \
+                    "ouvert NUMERIC, deblaye NUMERIC, arrose NUMERIC," \
+                    "resurface NUMERIC);"
 URL_XML_GLISSADES = "http://www2.ville.montreal.qc.ca/services_citoyens/pdf_transfert/L29_GLISSADE.xml"
-INSERT_GLISSADES = ""
+INSERT_GLISSADES = "INSERT INTO glissades (nom, nom_arr, cle, " \
+                   "date_maj, ouvert, deblaye, condition) VALUES (?, ?, " \
+                   "?, ?, ?, ?, ?);"
 DROP_GLISSADES = "DROP TABLE IF EXISTS glissades;"
-CREATE_GLISSADES = ""
+CREATE_GLISSADES = "CREATE TABLE glissades(id INTEGER PRIMARY KEY " \
+                   "AUTOINCREMENT, nom VARCHAR(200), nom_arr VARCHAR(" \
+                   "100), cle VARCHAR(100), date_maj TEXT," \
+                   "ouvert NUMERIC, deblaye NUMERIC, " \
+                   "condition VARCHAR(100));"
+
 
 ################################################################################
 # STATIC FUNCTIONS
 ################################################################################
-
-
-def to_dict(dict_name, cursor):
-    return [dict(dict_name) for dict_name in cursor.fetchall()]
-
-
 def get_csv_data_from_url(url):
     """Get the piscines data"""
     with requests.Session() as s:
-        download = s.get(url)
-    decoded_content = download.content.decode('utf-8')
-    cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-    rows = list(cr)
-    for row in rows:
-        print(row)
+        response = s.get(url)
+    decoded_content = response.content.decode('utf-8')
+    root = csv.reader(decoded_content.splitlines(), delimiter=',')
+    rows = list(root)
     return rows
 
 
 def get_xml_data_from_url(url):
-    http = urllib3.PoolManager()
-    response = http.request('GET', url)
-    try:
-        data = xmltodict.parse(response.data)
-    except ValueError:
-        print("Failed to parse xml from response (%s)" %
-              traceback.format_exc())
-    return data
+    """Get the glissade data"""
+    with requests.Session() as s:
+        response = s.get(url)
+    decoded_content = response.content.decode('utf-8')
+    tree = ET.fromstring(decoded_content)
+    return tree
+
+
+def download_xml_file_from_url(url):
+    with requests.Session() as s:
+        response = s.get(url)
+    content = response.content
+    with open('patinoires.xml', 'wb') as file:
+        file.write(content)
+
+
+def print_xml_tree(root):
+    print(ET.tostring(root, encoding='utf8').decode('utf8'))
+    return 1
+
+
 ################################################################################
 # DATABASE OBJECT
 ################################################################################
-
-
 class Database:
     ############################################################################
     # CONSTRUCTOR
     ############################################################################
     def __init__(self):
         self.connection = None
+
     ############################################################################
     # FUNCTIONS
     ############################################################################
@@ -89,13 +105,63 @@ class Database:
         cursor.executemany(INSERT_PISCINES_INSTALLATIONS_AQUATIQUES, rows)
         connection.commit()
         connection.close()
+        self.disconnect()
 
     def add_patinoires_data_to_database(self):
         """add XML data from url to database"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        rows = get_csv_data_from_url(URL_XML_PATINOIRES)
-        cursor.executemany(INSERT_PATINOIRES, rows)
+        root = get_xml_data_from_url(URL_XML_PATINOIRES)
+        final = []
+        arrondissements = root.findall("arrondissement")
+        for index1, arrondissement in enumerate(arrondissements):
+            # print('arrondissement : ', len(arrondissement))
+            nom_arr = arrondissement.find("nom_arr").text.strip()
+            patinoires = arrondissement.find("patinoire")
+            # print('patinoires : ',len(patinoires))
+            noms_pats = patinoires.findall("nom_pat")
+            # print('noms_pats : ', len(noms_pats))
+            conditions = patinoires.findall("condition")
+            # print(conditions[0][0].text.strip()) # heure_date 1
+            # print(conditions[1][0].text.strip())
+            # print(conditions[3][0].text.strip())
+            # print(conditions[4][0].text.strip())
+            # print(conditions[0][1].text.strip()) # ouvert
+            # print(conditions[0][2].text.strip()) # deblaye
+            # print(conditions[0][3].text.strip()) # arrose
+            # print(conditions[0][4].text.strip()) # resurface
+            # print('conditions : ', len(conditions))
+            for index3, nom in enumerate(noms_pats):
+                nom_pat = nom.text.strip()
+                # if index3 == 0:
+                #     break
+                for i in range(int(len(conditions) / len(noms_pats))):
+                    date_heure = conditions[i + index3 * int(len(
+                        conditions) / len(noms_pats))][0].text.strip()
+                    ouvert = conditions[i + index3 * int(len(
+                        conditions) / len(noms_pats))][1].text.strip()
+                    deblaye = conditions[i + index3 * int(len(
+                        conditions) / len(noms_pats))][2].text.strip()
+                    arrose = conditions[i + index3 * int(len(
+                        conditions) / len(noms_pats))][3].text.strip()
+                    resurface = conditions[i + index3 * int(len(
+                        conditions) / len(noms_pats))][4].text.strip()
+                    cursor.execute(INSERT_PATINOIRES, (
+                        nom_arr, nom_pat, date_heure, ouvert, deblaye, arrose,
+                        resurface))
+                # ouvert_list.append(condition.find("ouvert").text.strip())
+                # deblaye_list.append(condition.find("deblaye").text.strip())
+                # arrose_list.append(condition.find("arrose").text.strip())
+                # resurface_list.append(condition.find("resurface").text.strip())
+                # print(result)
+                # print(len(final))
+                # conditions
+                # if index4 == 0:
+                #         break
+            # arrondissements
+            # if index1 == 1:
+            #     break
+        print('final : ', len(final))
         connection.commit()
         connection.close()
         self.disconnect()
@@ -104,13 +170,25 @@ class Database:
         """add XML data from url to database"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        rows = get_csv_data_from_url(URL_XML_GLISSADES)
-        cursor.executemany(INSERT_GLISSADES, rows)
+        glissades = get_xml_data_from_url(URL_XML_GLISSADES)
+        glissades_data = []
+        for glissade in glissades:
+            nom = glissade.find("nom").text.strip()
+            nom_arr = glissade.find("arrondissement").find(
+                "nom_arr").text.strip()
+            cle = glissade.find("arrondissement").find("cle").text.strip()
+            date_maj = glissade.find("arrondissement").find(
+                "date_maj").text.strip()
+            ouvert = glissade.find("ouvert").text
+            deblaye = glissade.find("deblaye").text.strip()
+            condition = glissade.find("condition").text.strip()
+            total = (nom, nom_arr, cle, date_maj, ouvert, deblaye, condition)
+            glissades_data.append(total)
+        cursor.executemany(INSERT_GLISSADES, glissades_data)
         connection.commit()
         connection.close()
         self.disconnect()
 
-    # source: https://pretagteam.com/question/how-to-read-a-csv-file-from-a-url-with-python
     def create_piscines_installations_aquatiques_table(self):
         connection = self.get_connection()
         cursor = connection.cursor()
@@ -128,6 +206,16 @@ class Database:
         connection.commit()
         connection.close()
         self.disconnect()
+
+    def create_patinoires_table(self):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(DROP_PATINOIRES)
+        cursor.execute(CREATE_PATINOIRES)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+
 ################################################################################
 # END OF FILE
 ################################################################################
