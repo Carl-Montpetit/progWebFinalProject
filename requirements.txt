@@ -3,9 +3,10 @@
 # https://pypi.org/project/aniso8601/
 aniso8601==9.0.1
 
-# Schedule when exute python code
+# Schedule when execute python code
 #
-# https://www.techcoil.com/blog/how-to-use-flask-apscheduler-in-your-python-3-flask-application-to-run-multiple-tasks-in-parallel-from-a-single-http-request/
+# https://apscheduler.readthedocs.io/en/3.x/modules/triggers/cron.html
+# https://betterprogramming.pub/introduction-to-apscheduler-86337f3bb4a6
 APScheduler==3.8.1
 
 # define a set of attributes that will be applied later to a class or object
