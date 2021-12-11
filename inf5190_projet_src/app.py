@@ -9,7 +9,12 @@ from flask import render_template, redirect, request, url_for, flash, Flask, \
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
 import pytz
-
+import yaml
+from yaml.loader import SafeLoader
+import json
+from datetime import datetime
+import pytz_deprecation_shim as pds
+from zoneinfo import ZoneInfo
 ################################################################################
 # CONSTANTS #
 ################################################################################
@@ -18,8 +23,9 @@ ERROR_TEMPLATE = 'error.html'
 ################################################################################
 # INITIALIZE FLASK APPLICATION #
 ################################################################################
-local_time_quebec_canada = datetime.now(pytz.timezone('America/Toronto'))
-# Create and initialize a Flask application called app
+# CA = pds.timezone("Canada/Eastern")
+CA = ZoneInfo("America/Toronto")
+pds.PytzUsageWarning()
 app = Flask(
     __name__, static_folder="static", template_folder="templates",
     static_url_path=""
@@ -34,7 +40,7 @@ bootstrap = Bootstrap(app)
 db = Database()
 
 # link scheduler with the application
-scheduler = BackgroundScheduler(daemon=True)
+scheduler = BackgroundScheduler(tzinfo=CA, daemon=True)
 
 
 ################################################################################
@@ -42,17 +48,17 @@ scheduler = BackgroundScheduler(daemon=True)
 ################################################################################
 
 def scheduled_database_update():
-    db.create_piscines_installations_aquatiques_table()
-    db.add_piscines_installations_aquatiques_data_to_database()
-    # db.create_glissades_table()
-    # db.add_glissades_data_to_database()
+    # db.create_piscines_installations_aquatiques_table()
+    # db.add_piscines_installations_aquatiques_data_to_database()
+    db.create_glissades_table()
+    db.add_glissades_data_to_database()
     # db.create_patinoires_table()
     # db.add_patinoires_data_to_database()
-    print('The database was updated at {}'.format(local_time_quebec_canada))
+    print('The database was updated at {}'.format(datetime.now(CA)))
 
 
 # Update database every day at midnight
-scheduler.add_job(scheduled_database_update, 'cron', hour='0', day='*')
+scheduler.add_job(scheduled_database_update, 'cron', hour='3', minute='36')
 scheduler.start()
 
 
@@ -101,11 +107,22 @@ def service_unavailable(error):
 ################################################################################
 
 
-@app.route("/")
+@app.route('/')
 def index():
     """main route of application"""
-    print(local_time_quebec_canada)
-    return render_template("home.html")
+    db.create_piscines_installations_aquatiques_table()
+    db.add_piscines_installations_aquatiques_data_to_database()
+    db.create_glissades_table()
+    db.add_glissades_data_to_database()
+    db.create_patinoires_table()
+    db.add_patinoires_data_to_database()
+    print(datetime.now(CA))
+    return render_template('home.html')
+
+
+@app.route('/doc')
+def doc():
+    return render_template('services.html'), 200
 
 
 ################################################################################
