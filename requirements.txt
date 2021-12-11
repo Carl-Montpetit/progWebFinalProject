@@ -4,7 +4,7 @@
 aniso8601==9.0.1
 
 # Schedule when execute python code
-#
+# ✅
 # https://apscheduler.readthedocs.io/en/3.x/modules/triggers/cron.html
 # https://betterprogramming.pub/introduction-to-apscheduler-86337f3bb4a6
 APScheduler==3.8.1
@@ -291,6 +291,17 @@ marshmallow==3.14.0
 # https://marshmallow-sqlalchemy.readthedocs.io/en/latest/
 marshmallow-sqlalchemy==0.26.1
 
+# NumPy is the fundamental package for scientific computing in Python.  It is
+# a Python library that provides a multidimensional array object, various
+# derived objects (such as masked arrays and matrices), and an assortment of
+# routines for fast operations on arrays, including mathematical, logical,
+# shape manipulation, sorting, selecting, I/O, discrete Fourier transforms,
+# basic linear algebra, basic statistical operations, random simulation and
+# much more.
+#
+# https://numpy.org/doc/stable/user/whatisnumpy.html
+numpy==1.21.4
+
 # TODO
 #
 # https://oauthlib.readthedocs.io/en/latest/
@@ -306,7 +317,11 @@ oauthlib==3.1.1
 # https://pypi.org/project/packaging/
 packaging==21.2
 
-# TODO
+# Pandas is a Python library used for working with data sets.
+# It has functions for analyzing, cleaning, exploring, and manipulating data.
+#
+# https://pandas.pydata.org/docs/reference/api/pandas.read_xml.html
+# https://www.w3schools.com/python/pandas/pandas_intro.asp
 pandas==1.3.4
 
 # TODO
@@ -384,7 +399,7 @@ python-dotenv==0.19.1
 # solves the issue of ambiguous times at the end of daylight saving time,
 # which you can read more about in the Python Library Reference (datetime
 # .tzinfo).
-#
+# ✅
 # https://pypi.org/project/pytz/
 pytz==2021.3
 pytz-deprecation-shim==0.1.0.post0
@@ -393,11 +408,11 @@ pytz-deprecation-shim==0.1.0.post0
 # interaction with scripting languages. PyYAML is a YAML parser and emitter
 # for Python.
 #
-# https://pypi.org/project/PyYAML/
+# https://pyyaml.org/wiki/PyYAMLDocumentation
 PyYAML==6.0
 
 # Requests is a simple, yet elegant, HTTP library.
-#
+# ✅
 # https://pypi.org/project/requests/
 requests==2.26.0
 
@@ -470,14 +485,14 @@ twython==3.9.1
 # zone database. It is intended to be a fallback for systems that do not have
 # system time zone data installed (or don’t have it installed in a standard
 # location), as a part of PEP 615 \
-#
+# ✅
 # https://tzdata.readthedocs.io/en/latest/
 tzdata==2021.5
 
 # This Python module returns a tzinfo object (with a pytz_deprecation_shim,
 # for pytz compatibility) with the local timezone information, under Unix and
 # Windows.
-#
+# ✅
 # https://pypi.org/project/tzlocal/
 tzlocal==4.1
 
@@ -527,6 +542,7 @@ Werkzeug==2.0.2
 # https://pypi.org/project/WTForms/
 WTForms==2.3.3
 
+# TODO
 # https://pypi.org/project/zipp/
 # https://docs.python.org/3.8/library/zipfile.html#path-objects
 zipp==3.6.0
