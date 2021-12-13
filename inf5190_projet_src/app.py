@@ -9,7 +9,8 @@ import tzlocal
 import time
 import pytz
 import yaml
-
+import os
+import json
 from db.db import Database
 from datetime import datetime
 from flask_bootstrap import Bootstrap
@@ -24,7 +25,6 @@ from wtforms.validators import DataRequired, length
 from dicttoxml import dicttoxml
 from xml.dom.minidom import parseString, parse
 from tabulate import tabulate
-import json
 
 ###############################################################################
 # CONSTANTS #
@@ -36,13 +36,12 @@ ERR_MSG_NO_INSTALLATIONS_FOR_ARR = "Error, there's no installations found " \
 ###############################################################################
 # INITIALIZE FLASK APPLICATION #
 ###############################################################################
-# CA = pds.timezone("Canada/Eastern")
 local_time = pytz.timezone("America/Toronto")
+
 app = Flask(
-    __name__, static_folder="static", template_folder="templates",
-    static_url_path=""
+    __name__, static_url_path="", root_path='',
+    static_folder='static', template_folder='templates'
 )
-app.config['SECRET_KEY'] = 'hard_to_guess_string'
 
 # link flask-bootstrap with the application
 bootstrap = Bootstrap(app)
@@ -50,18 +49,28 @@ bootstrap = Bootstrap(app)
 # create a database object called db
 db = Database()
 
-
 ###############################################################################
 # SCHEDULER #
 ###############################################################################
 # link scheduler with the application
-# scheduler = BackgroundScheduler(timezone=local_time, daemon=True)
+scheduler = BackgroundScheduler(timezone=local_time, daemon=True)
+
+
+def scheduled_database_update():
+    """Update the database from HTTP request from URLs"""
+    db.create_piscines_installations_aquatiques_table()
+    db.add_piscines_installations_aquatiques_data_to_database()
+    db.create_glissades_table()
+    db.add_glissades_data_to_database()
+    db.create_patinoires_table()
+    db.add_patinoires_data_to_database()
+    print('The database was updated at {}'.format(datetime.now(local_time)))
 
 
 # Update database every day at midnight
-# scheduler.add_job(scheduled_database_update, 'cron', hour='0', minute='0',
-#                   day='*')
-# scheduler.start()
+scheduler.add_job(scheduled_database_update, 'cron', hour='0', minute='0',
+                  day='*')
+scheduler.start()
 
 
 ###############################################################################
@@ -146,7 +155,7 @@ def get_installations_for_arrondissement():
                                error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
     json_installations = jsonify(installations_list)
     return Response(tabulate(installations_list,
-                             tablefmt='fancy_grid').encode('utf-8'),
+                             tablefmt='grid').encode('utf-8'),
                     content_type='charset=UTF-8'), 200
 
 
@@ -164,8 +173,8 @@ def get_all_installations_list():
     installations_list = get_all_installations_names()
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
-    return render_template('result.html', installations=
-        installations_list), 200
+    return render_template('specific-installation.html', installations=
+    list(installations_list)), 200
 
 
 @app.route('/installations/2021/installations-2021.xml',
@@ -226,17 +235,6 @@ def get_installations_data_2021():
     installations_list = (installations_piscines, installations_patinoires,
                           installations_glissades)
     return installations_list
-
-
-def scheduled_database_update():
-    """Update the database from HTTP request from URLs"""
-    db.create_piscines_installations_aquatiques_table()
-    db.add_piscines_installations_aquatiques_data_to_database()
-    db.create_glissades_table()
-    db.add_glissades_data_to_database()
-    db.create_patinoires_table()
-    db.add_patinoires_data_to_database()
-    print('The database was updated at {}'.format(datetime.now(local_time)))
 
 
 def get_all_installations_names():

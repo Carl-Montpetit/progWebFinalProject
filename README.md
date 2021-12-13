@@ -85,5 +85,7 @@ MONC08069000
 > - **Password** : `vagrant`
 
 ![image-20211125123522340](https://tva1.sinaimg.cn/large/008i3skNgy1gwrx0e7y4tj31440tmdnm.jpg)
-
+## Sources
+- Barre de navigation :
+  - `https://www.quackit.com/bootstrap/bootstrap_3/tutorial/bootstrap_navbars.cfm`
 ---

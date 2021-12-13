@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "home.html" %}
 {% block title %}💾DDAIM{% endblock title %}
 {% block content %}
     <div id="result" class="container">
@@ -12,15 +12,16 @@
                     type="button"
                     data-toggle="dropdown">All Installations
                 <span class="caret"></span></button>
-            <ul id="dropdown-menu" class="dropdown-menu">
+            <ul id="dropdown-menu" name="dropdown-menu"
+                class="dropdown-menu" onchange="onSelectInstallation()">
                 {% for installation in installations[0] %}
-                    <li><a href="#">{{ installation }}</a></li>
+                    <li><a>{{ installation }}</a></li>
                 {% endfor %}
                 {% for installation in installations[1] %}
-                    <li><a href="#">{{ installation }}</a></li>
+                    <li><a>{{ installation }}</a></li>
                 {% endfor %}
                 {% for installation in installations[2] %}
-                    <li><a href="#">{{ installation }}</a></li>
+                    <li><a>{{ installation }}</a></li>
                 {% endfor %}
             </ul>
         </div>

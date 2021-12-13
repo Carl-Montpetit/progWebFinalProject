@@ -197,3 +197,4 @@ Pour tester ce point il faut :
 >
 > 💡Il est clair qu'il existe peut-être une façon de bien générer le format `CSV` mais on va en rester là avec le temps impartie.
 
+---
