@@ -1,7 +1,6 @@
-function sendRequest() {
+function onSubmitDistrict() {
     let xhttp = new XMLHttpRequest()
-    // let result = document.getElementById('result')
-    const arrondissement = document.getElementById("district").value
+    const arrondissement = document.getElementById("arrondissement").value
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
             alert(xhttp.responseText)
@@ -13,4 +12,22 @@ function sendRequest() {
     xhttp.send()
 }
 
-document.getElementById("district-form").addEventListener("onSubmit", sendRequest)
+
+function onSubmitDistrict() {
+    const arrondissement = document.getElementById("arrondissement").value
+    let result = document.getElementById('result')
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                result.innerHTML = xhr.responseText
+            } else {
+                console.log('Erreur avec le serveur')
+            }
+        }
+    }
+    xhr.open("GET", '/installations?arrondissement=' + arrondissement, true);
+    xhr.send();
+}
+
+document.getElementById("district-btn").addEventListener("onclick", onSubmitDistrict)

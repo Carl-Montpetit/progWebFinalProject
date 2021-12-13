@@ -72,25 +72,13 @@ def get_xml_data_from_url(url):
     return tree
 
 
-def download_xml_file_from_url(url):
-    with requests.Session() as s:
-        response = s.get(url)
-    content = response.content.decode('utf-8')
-    with open('patinoires.xml', 'wb') as file:
-        file.write(content)
-
-
-def print_xml_tree(root):
-    print(elementTree.tostring(root, encoding='utf8').decode('utf8'))
-    return 1
-
-
 def multiple_query_piscines(cursor, rows):
     cursor.executemany(INSERT_PISCINES, rows)
     cursor.execute(DELETE_TITLES_PISCINES)
 
 
 def get_conditions_fields(conditions, j, k, noms_pats):
+    """Return all conditions fiels data for patinoires"""
     date_heure = conditions[k + j * int(len(
         conditions) / len(noms_pats))][0].text.strip()
     ouvert = conditions[k + j * int(len(
@@ -105,6 +93,7 @@ def get_conditions_fields(conditions, j, k, noms_pats):
 
 
 def get_glissades_fields(glissade):
+    """Return all fields data for glissades"""
     nom = glissade.find("nom")
     nom.text = 'None' if nom.text is None else glissade.find(
         "nom").text.strip()
@@ -129,12 +118,8 @@ def get_glissades_fields(glissade):
     return cle, condition, date_maj, deblaye, nom, nom_arr, ouvert
 
 
-###############################################################################
-# DATABASE OBJECT #
-###############################################################################
-
-
 def cursor_records_to_dictionnary(cursor):
+    """Return cursor content as dictionnary"""
     records = cursor.fetchall()
     record_list = []
     column_names = [column[0] for column in cursor.description]
@@ -143,10 +128,14 @@ def cursor_records_to_dictionnary(cursor):
     return record_list
 
 
-"""Definition of a Database object"""
+###############################################################################
+# DATABASE OBJECT #
+###############################################################################
 
 
 class Database:
+    """Definition of a Database object"""
+
     ###########################################################################
     # CONSTRUCTOR #
     ###########################################################################
@@ -258,7 +247,7 @@ class Database:
         """return a list of installations specific to an arrondissement"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT type, nom FROM
+        cursor.execute("""SELECT DISTINCT nom FROM
         piscines_installations_aquatiques
         WHERE arrondissement LIKE ?;""", ('%' + arrondissement + '%',))
         record_list = cursor_records_to_dictionnary(cursor)
@@ -324,6 +313,42 @@ class Database:
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
            glissades WHERE date_maj >= ? ORDER BY nom ASC;""", ('2021-1-1',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_all_piscines_names(self):
+        """return a list of all piscines names"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom FROM 
+        piscines_installations_aquatiques;""")
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_all_patinoires_names(self):
+        """return a list of all patinoires names"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom_pat FROM 
+        patinoires;""")
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_all_glissades_names(self):
+        """return a list of all patinoires names"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom FROM 
+           glissades;""")
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()

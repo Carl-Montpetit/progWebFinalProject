@@ -95,7 +95,7 @@ Pour tester ce point il faut :
 1. Lancer la commande suivante pour convertir le fichier `raml` en fichier `HTML` :
 
    ```bash
-   raml2html services.raml > templates/services.html
+   raml2html -p -v services.raml > templates/services.html
    ```
 
 1. Lancer la route `http://eth1:5000/doc` dans un navigateur pour voir la documentation des `services REST ` de l'application.
@@ -145,7 +145,20 @@ Pour tester ce point il faut :
 >
 > « / »).
 
-####  ==A COMPLETER==
+Pour tester ce point il faut :
+
+1. Sur la page principale du logiciel (route '`/`') on doit cliquer sur le bouton `Search District Installations` pour se rendre sur la route `http://eth1:5000/installations` et ensuite on peut entrer la requête dans un champs texte approprié (Form input).
+1. La requête asynchrone  retourne la réponse sous forme de tableau  généré par `Tabulate` sur une page du fureteur le `content type` est `charset=UTF-8`.
+
+> ⚠️Noter que le tableau généré par `Tabulate` est parfois décalé (avec beaucoup d'espace vide principalement pour la table contenant les patinoires) pour fusionner les résultats des trois tables ensemble. J'ai manqué de temps pour fixer ce problème.
+
+## Point A6 (10 points)
+
+> L'application du point `A5` offre un mode de recherche par nom d'installation. La liste de toutes les installations est prédéterminée dans une **liste déroulante** et l'utilisateur choisira une installation parmi cette liste. Lorsque l'utilisateur **lance la recherche**, une **requête asynchrone** est envoyée à un `service REST` que vous devez créer à cet effet. Lorsque la réponse asynchrone revient, l'application `affiche l'information` connue sur cette installation.
+
+Pour tester ce point il faut :
+
+1. 
 
 ## Point C1 (10 points)
 

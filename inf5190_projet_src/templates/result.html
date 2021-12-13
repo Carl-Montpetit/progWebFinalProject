@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+{% block title %}💾DDAIM{% endblock title %}
+{% block content %}
+    <div id="result" class="container">
+        <h2 id="title-result" class="text-center">Here's a dropdown list that
+        contains all
+            installations
+            available!</h2>
+        <div id="dropdown" class="dropdown text-center">
+            <button id="dropdown-button" class="btn btn-danger
+            dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown">All Installations
+                <span class="caret"></span></button>
+            <ul id="dropdown-menu" class="dropdown-menu">
+                {% for installation in installations[0] %}
+                    <li><a href="#">{{ installation }}</a></li>
+                {% endfor %}
+                {% for installation in installations[1] %}
+                    <li><a href="#">{{ installation }}</a></li>
+                {% endfor %}
+                {% for installation in installations[2] %}
+                    <li><a href="#">{{ installation }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

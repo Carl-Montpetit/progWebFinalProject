@@ -59,7 +59,7 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
               List of all installations for a specific query string rendered
               successfully.
             body:
-              application/json:
+              text/html:
           404:
             description:
               There's no installations for that specific query string or the
@@ -108,7 +108,22 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
                 List of all installations updated in 2021 rendered
                 successfully.
               body:
-                application/xhtml+xml:
+                img/svg+xml:
+            404:
+              description:
+                There's no ressource data for 2021 installations.
+              body:
+                text/html:
+      #########################################################################
+      /installations/all-installations:
+        get:
+          responses:
+            200:
+              description:
+                List of all installations names rendered
+                successfully in a template containing a dropdown menu.
+              body:
+                text/html:
             404:
               description:
                 There's no ressource data for 2021 installations.

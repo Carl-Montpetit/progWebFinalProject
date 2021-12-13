@@ -10,6 +10,7 @@
                       href="style.css">
             {% endblock styles %}
             {% block metas %}
+                {{ super() }}
                 <meta charset="UTF-8"/>
                 <meta name="Carl Montpetit"
                       content="INF5190-Project"/>
@@ -22,6 +23,7 @@
             {% block content %}{% endblock content %}
             {% include "footer.html" %}
             {% block scripts %}
+                {{ super() }}
                 <script src="app.js"></script>
             {% endblock scripts %}
         {% endblock body %}

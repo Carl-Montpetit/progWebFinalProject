@@ -3,7 +3,6 @@
 ###############################################################################
 import csv
 import json
-
 import pandas as pd
 import pytz_deprecation_shim
 import tzlocal
@@ -24,6 +23,8 @@ from wtforms import StringField, TextField, SubmitField
 from wtforms.validators import DataRequired, length
 from dicttoxml import dicttoxml
 from xml.dom.minidom import parseString, parse
+from tabulate import tabulate
+import json
 
 ###############################################################################
 # CONSTANTS #
@@ -55,16 +56,6 @@ db = Database()
 ###############################################################################
 # link scheduler with the application
 # scheduler = BackgroundScheduler(timezone=local_time, daemon=True)
-
-
-def scheduled_database_update():
-    db.create_piscines_installations_aquatiques_table()
-    db.add_piscines_installations_aquatiques_data_to_database()
-    db.create_glissades_table()
-    db.add_glissades_data_to_database()
-    db.create_patinoires_table()
-    db.add_patinoires_data_to_database()
-    print('The database was updated at {}'.format(datetime.now(local_time)))
 
 
 # Update database every day at midnight
@@ -154,7 +145,9 @@ def get_installations_for_arrondissement():
         return render_template('error.html',
                                error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
     json_installations = jsonify(installations_list)
-    return json_installations, 200
+    return Response(tabulate(installations_list,
+                             tablefmt='fancy_grid').encode('utf-8'),
+                    content_type='charset=UTF-8'), 200
 
 
 @app.route('/installations/2021', methods=['GET'])
@@ -166,6 +159,15 @@ def get_installations_list_2021():
     return formated_data, 200
 
 
+@app.route('/installations/all-installations', methods=['GET'])
+def get_all_installations_list():
+    installations_list = get_all_installations_names()
+    if installations_list is None or len(installations_list) == 0:
+        return abort(404)
+    return render_template('result.html', installations=
+        installations_list), 200
+
+
 @app.route('/installations/2021/installations-2021.xml',
            methods=['GET'])
 def get_XML_formated_installations_list_2021():
@@ -174,7 +176,7 @@ def get_XML_formated_installations_list_2021():
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
     formated_data = parseString(dicttoxml(installations_list)).toprettyxml()
-    return Response(formated_data, content_type='application/xhtml+xml')
+    return Response(formated_data, content_type='application/xhtml+xml'), 200
 
 
 @app.route('/installations/2021/installations-2021.csv', methods=['GET'])
@@ -184,12 +186,22 @@ def get_CSV_formated_installations_list_2021():
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
     formated_data = parseString(dicttoxml(installations_list)).toprettyxml()
-    df = pd.DataFrame(installations_list)
+    df = pd.DataFrame(installations_list[0] + installations_list[
+        1] + installations_list[2])
     df.to_csv('data.csv', index=False, header=False, encoding='utf-8')
     csv_string = open('data.csv', mode='r', encoding='utf-8')
-    return Response(csv_string, content_type='img/svg+xml')
+    return Response(csv_string, content_type='img/svg+xml'), 200
 
 
+@app.route('/doc', methods=['GET'])
+def doc():
+    """Render a template containing all REST services documentation"""
+    return render_template('services.html'), 200
+
+
+###############################################################################
+# FUNCTIONS #
+###############################################################################
 def get_data_for_arrondissement(arrondissement):
     """Return all installations from all tables for specific arrondissement"""
     installations_piscines = \
@@ -201,9 +213,8 @@ def get_data_for_arrondissement(arrondissement):
     installations_glissades = \
         db.get_glissades_installations_list_from_arrondissement(
             arrondissement)
-    installations_list = (
-            installations_piscines + installations_patinoires +
-            installations_glissades)
+    installations_list = (installations_piscines + installations_patinoires + \
+                          installations_glissades)
     return installations_list
 
 
@@ -212,15 +223,30 @@ def get_installations_data_2021():
     installations_piscines = db.get_piscines_installations_2021()
     installations_patinoires = db.get_patinoires_installations_2021()
     installations_glissades = db.get_patinoires_installations_2021()
-    installations_list = (installations_piscines + installations_patinoires
-                          + installations_glissades)
+    installations_list = (installations_piscines, installations_patinoires,
+                          installations_glissades)
     return installations_list
 
 
-@app.route('/doc', methods=['GET'])
-def doc():
-    """Render a template containing all REST services documentation"""
-    return render_template('services.html'), 200
+def scheduled_database_update():
+    """Update the database from HTTP request from URLs"""
+    db.create_piscines_installations_aquatiques_table()
+    db.add_piscines_installations_aquatiques_data_to_database()
+    db.create_glissades_table()
+    db.add_glissades_data_to_database()
+    db.create_patinoires_table()
+    db.add_patinoires_data_to_database()
+    print('The database was updated at {}'.format(datetime.now(local_time)))
+
+
+def get_all_installations_names():
+    """Return all installations updated in 2021 data from all tables"""
+    installations_piscines = db.get_all_piscines_names()
+    installations_patinoires = db.get_all_patinoires_names()
+    installations_glissades = db.get_all_glissades_names()
+    installations_list = (installations_piscines, installations_patinoires,
+                          installations_glissades)
+    return installations_list
 
 
 ###############################################################################
