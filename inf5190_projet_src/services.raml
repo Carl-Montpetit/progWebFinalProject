@@ -1,60 +1,77 @@
 #%RAML 1.0
-title: Projet de session INF5190 # required title
-version: 1
+title: Documentation of REST services of the DDAIM by Carl Montpetit
+version: 1.0
 baseUri: http://192.168.56.7:5000
-documentation:
-  - title: The REST services documentation.
-
+###############################################################################
 /: # optional resource
-  description: This is the main resource of the application.
+  description:
+    This is the main resource of the application.
   get: # HTTP method declaration
     responses: # declare a response
       200: # HTTP status code
-        description: The main page was rendered successfuly
+        description:
+          The main resource was rendered successfully.
         body: # declare content of response
           text/html: # media type
-            #            type: | # structural definition of a response (schema or type)
-            #              {
-            #                "title": "Hello world Response",
-            #                "type": "object",
-            #                "properties": {
-            #                  "message": {
-            #                    "type": "string"
-            #                  }
-            #                }
-            #              }
-            example: # example how a response looks like
-              A HTML template
-  /test:
-    displayName: TEST
+  #############################################################################
+  /doc:
+    displayName:
+      doc
+    description:
+      A sub resource for getting documentation of REST services.
     get:
-      description: a sub resource
-
-  /{id}:
-    uriParameters:
-      id:
-        type: string
-        description: account identifier
-        minLength: 1
-        maxLength: 10
-
+      responses:
+        200:
+          description:
+            The documentation of REST services rendered successfully.
+          body:
+            text/html:
+  #############################################################################
+  /installations:
+    displayName:
+      installations d'hiver
+    description:
+      A sub resource for getting installations list for specific
+      arrondissements.
     get:
-      headers:
-        Authorization:
+      responses:
+        404:
+          description: No ressource evailable to find without query string
+          body:
+            text/html:
+    ###########################################################################
+    /{arrondissement}:
+      uriParameters:
+        arrondissement:
           type: string
-          description: Basic authentication header
-          example: |
-            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
-
-    put:
-      body:
-        application/x-www-form-urlencoded:
-          properties:
-            name:
-              description: name on account
-              type: string
-              examples:
-                example1: Naruto Uzumaki
-                example2: Kevin Renskers
-            gender:
-              enum: [ "male", "female" ]
+          description:
+            name of an arrondissement containing installations.
+          minLength: 4
+          maxLength: 40
+      get:
+        responses:
+          200:
+            description:
+              List of all installations for a specific query string rendered
+              successfully.
+            body:
+              application/json:
+          404:
+            description:
+              There's no installations for that specific query string or the
+              format of query string is invalid.
+        headers:
+          Authorization:
+            type: string
+    ###########################################################################
+    /2021:
+      get:
+        responses:
+          200:
+            description:
+              List of all installations updated in 2021 rendered
+              successfully.
+          404:
+            description:
+              There's no ressource data for 2021.
+###############################################################################

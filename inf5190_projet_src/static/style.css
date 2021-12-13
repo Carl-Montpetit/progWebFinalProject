@@ -1,0 +1,26 @@
+#title-main {
+    text-shadow: 30px 30px 15px;
+    margin-bottom: 60px;
+}
+
+#district-form {
+    box-shadow: 30px 30px 15px;
+    background-color: rgba(37, 186, 216, 0.64);
+    padding: 20px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    width: 400px;
+    height: auto;
+}
+
+#district-btn {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#navbar {
+    font-size: 18px;
+    font-weight: bold;
+}

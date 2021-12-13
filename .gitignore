@@ -7,7 +7,6 @@ log.txt
 .dist
 .idea
 LICENSE
-__pycache__
 __pycache__/*
 *.pdf
 *.db

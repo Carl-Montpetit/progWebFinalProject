@@ -1,6 +1,5 @@
 # Projet de session inf5190-Programmation web avancée-Automne 2021
 
----
 **Auteur** : 
 Carl Montpetit
 
@@ -13,8 +12,6 @@ MONC08069000
 ---
 ## Description
 >Le projet consiste à récupérer un ensemble de données provenant de la ville de Montréal et d'offrir des services à partir de ces données. Il s'agit de données ouvertes à propos d'installations pour faire des activités sportives.
----
-
 ## Technologies utilisées
 
 - HTML5
@@ -30,8 +27,6 @@ MONC08069000
 - Werkzeug 2.0.2
 - Jinja2
 
----
-
 ## Instructions
 
 #### Pour lancer l'application avec **Vagrant** :
@@ -42,7 +37,11 @@ MONC08069000
 
 2. Lancer la commande `vagrant ssh` pour s'y connecter.
 
-3. Noter l'adresse ip (eth1) de la machine virtuelle qui est mentionnée.
+2. Le nom d'utilisateur est `vagrant` et le mot de passe est aussi `vagrant` !
+
+2. Le `port` est toujours `5000`.
+
+3. ⚠️Noter l'`adresse ip (eth1)` de la machine virtuelle qui est mentionnée.
 
 4. Lancer la commande `source /home/vagrant/inf5190_projet_venv/bin/activate` pour activer l'environnement virtuel de `Python🐍`.
 
@@ -52,7 +51,7 @@ MONC08069000
 
 7. Se déplacer dans le répertoire `inf5190_projet_src` avec la commande `cd inf5190_projet_src/`.
 
-8. Lancer l'application flask avec la commande `python app.py`.
+8. Lancer l'application `flask` avec la commande `python app.py`.
 
 9. Ouvrir un fureteur et entrer le `URL` `http://eth1:5000` avec `eth1`, l'`adresse ip ` offert lors du lancement de la machine virtuelle avec `Vagrant`.
 
@@ -73,13 +72,7 @@ MONC08069000
 1. Executer la commande `sqlite3`.
 2. Executer `.open db.db`.
 3. Executer `.read db.sql`.
-4. On peut maintenant créer des tables avec lignes et des colonnes dans la base de données  `db.sql` et y injecter des données  à partir de l'application web.
-
----
-
-## Notes
-
----
+4. On peut maintenant créer des tables avec lignes et des colonnes dans la base de données  `db.sql` et y insérer des données  à partir de l'application web.
 
 ## Détails
 
@@ -93,10 +86,9 @@ MONC08069000
 
 ![image-20211125123522340](https://tva1.sinaimg.cn/large/008i3skNgy1gwrx0e7y4tj31440tmdnm.jpg)
 
----
-
 ## Sources
-- Pour la barre de navigation :
-  - https://getbootstrap.com/docs/3.4/components/#navbar
+
+- Source pour la barre de navigation avec bootstrap3 utilisée :
+  - `https://getbootstrap.com/docs/3.4/components/#navbar`
 
 ---

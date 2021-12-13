@@ -3,81 +3,71 @@ import csv
 import requests
 import xml.etree.ElementTree as elementTree
 
-################################################################################
-# CONSTANTS
-################################################################################
-URL_CSV_PISCINES = "https://data.montreal.ca/dataset/4604afb7-a7c4-4626-a3ca-e136158133f2/resource/cbdca706-569e-4b4a-805d-9af73af03b14/download/piscines.csv"
-INSERT_PISCINES = "INSERT INTO piscines_installations_aquatiques (id_uev, " \
-                  "type,  nom, arrondissement, adresse, propriete, gestion,  " \
-                  "point_x, point_y, equipement, longitude, latitude) VALUES " \
-                  "(?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-DROP_PISCINES = "DROP TABLE IF EXISTS piscines_installations_aquatiques;"
-DESTROY_NBSP_PISCINES = "UPDATE piscines_installations_aquatiques SET adresse " \
-                        "= REPLACE(adresse,' ', ' ');"
-DELETE_TITLES_PISCINES = "DELETE FROM piscines_installations_aquatiques WHERE " \
-                         "id=1"
-EMPTY_IS_NULL_ADRESSE = "UPDATE piscines_installations_aquatiques SET adresse = NULLIF(adresse, '');"
-EMPTY_IS_NULL_PROPRIETE = "UPDATE piscines_installations_aquatiques SET " \
-                          "propriete = NULLIF(propriete, '');"
-EMPTY_IS_NULL_GESTION = "UPDATE piscines_installations_aquatiques SET gestion = NULLIF(gestion, '');"
-EMPTY_IS_NULL_EQUIPEMENT = "UPDATE piscines_installations_aquatiques SET " \
-                           "equipement = NULLIF(equipement, '');"
-CREATE_PISCINES = "CREATE TABLE " \
-                  "piscines_installations_aquatiques(id INTEGER PRIMARY KEY  " \
-                  "AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100), " \
-                  "nom  VARCHAR(100), arrondissement VARCHAR(100), adresse  " \
-                  "VARCHAR(100), propriete VARCHAR(100), gestion VARCHAR(" \
-                  "100),  point_x INTEGER, point_y INTEGER, equipement  " \
-                  "VARCHAR(100), longitude INTEGER, latitude INTEGER);"
+###############################################################################
+# CONSTANTS #
+###############################################################################
+# FIXME ⚠️check placeholders⚠️
+URL_CSV_PISCINES = "https://data.montreal.ca/dataset/4604afb7-a7c4-4626" \
+                   "-" + "a3ca-e136158133f2/resource/cbdca706-569e-4b4a-805d" \
+                         "-" + "9af73af03b14/download/piscines.csv"
+INSERT_PISCINES = """INSERT INTO piscines_installations_aquatiques (id_uev,
+type,nom,arrondissement,adresse,propriete,gestion,point_x,point_y,
+equipement,longitude,latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+DROP_PISCINES = """DROP TABLE IF EXISTS piscines_installations_aquatiques;"""
+DESTROY_NBSP_PISCINES = """UPDATE piscines_installations_aquatiques SET
+adresse  = REPLACE(adresse, ' ', ' ');"""
+DELETE_TITLES_PISCINES = """DELETE FROM piscines_installations_aquatiques
+WHERE id=1"""
+EMPTY_IS_NULL_ADRESSE = """UPDATE piscines_installations_aquatiques SET
+adresse = NULLIF(adresse, '');"""
+EMPTY_IS_NULL_PROPRIETE = """UPDATE piscines_installations_aquatiques SET
+propriete = NULLIF(propriete, '');"""
+EMPTY_IS_NULL_GESTION = """UPDATE piscines_installations_aquatiques SET
+gestion  = NULLIF(gestion, '');"""
+EMPTY_IS_NULL_EQUIPEMENT = """UPDATE piscines_installations_aquatiques SET
+equipement = NULLIF(equipement, '');"""
+CREATE_PISCINES = """CREATE TABLE piscines_installations_aquatiques(
+id INTEGER  PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100),
+nom  VARCHAR(100), arrondissement VARCHAR(100), adresse
+VARCHAR(100), propriete VARCHAR(100), gestion  VARCHAR(
+100), point_x INTEGER, point_y INTEGER, equipement
+VARCHAR(100), longitude INTEGER, latitude INTEGER);"""
 URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-476f" \
-                     "-95bd-a1ce1648a98c/resource/5d1859cc-2060-4def-903f-db" \
-                     "24408bacd0/download/l29-patinoire.xml"
-INSERT_PATINOIRES = "INSERT INTO patinoires (nom_arr, nom_pat, date_heure, " \
-                    "ouvert, deblaye, arrose, resurface) VALUES (?, ?, " \
-                    "?, ?, ?, ?, ?);"
-DROP_PATINOIRES = "DROP TABLE IF EXISTS patinoires;"
-CREATE_PATINOIRES = "CREATE TABLE patinoires(id INTEGER PRIMARY KEY " \
-                    "AUTOINCREMENT, nom_arr VARCHAR(200), nom_pat VARCHAR(" \
-                    "100), date_heure TEXT," \
-                    "ouvert NUMERIC, deblaye NUMERIC, arrose NUMERIC," \
-                    "resurface NUMERIC);"
-EMPTY_IS_NULL_OUVERT_PATINOIRES = "UPDATE patinoires SET ouvert = NULLIF(" \
-                                  "ouvert, " \
-                                  "'None');"
-EMPTY_IS_NULL_DEBLAYE_PATINOIRES = "UPDATE patinoires SET deblaye = NULLIF(" \
-                                   "deblaye, " \
-                                   "'None');"
-EMPTY_IS_NULL_ARROSE_PATINOIRES = "UPDATE patinoires SET arrose = NULLIF(" \
-                                  "arrose, " \
-                                  "'None');"
-EMPTY_IS_NULL_RESURFACE_PATINOIRES = "UPDATE patinoires SET resurface = " \
-                                     "NULLIF(" \
-                                     "resurface, " \
-                                     "'None');"
-DELETE_UGLY_PARENTHESIS = "UPDATE patinoires SET nom_pat = REPLACE(nom_pat," \
-                          "'()', '')"
+                     "-95bd -a1ce1648a98c/resource/5d1859cc-2060-4def-903f" \
+                     "-db 24408bacd0/download/l29-patinoire.xml"
+INSERT_PATINOIRES = """INSERT INTO patinoires (nom_arr, nom_pat, date_heure,
+ouvert, deblaye, arrose, resurface) VALUES (?, ?, ?, ?, ?, ?, ?);"""
+DROP_PATINOIRES = """DROP TABLE IF EXISTS patinoires;"""
+CREATE_PATINOIRES = """CREATE TABLE patinoires(id INTEGER PRIMARY KEY
+AUTOINCREMENT, nom_arr VARCHAR(200), nom_pat VARCHAR(100), date_heure TEXT,
+ouvert NUMERIC, deblaye NUMERIC, arrose NUMERIC, resurface NUMERIC);"""
+EMPTY_IS_NULL_OUVERT_PATINOIRES = """UPDATE patinoires SET ouvert = NULLIF(
+ouvert, 'None');"""
+EMPTY_IS_NULL_DEBLAYE_PATINOIRES = """UPDATE patinoires SET deblaye =
+NULLIF(deblaye, 'None');"""
+EMPTY_IS_NULL_ARROSE_PATINOIRES = """UPDATE patinoires SET arrose = NULLIF(
+arrose, 'None');"""
+EMPTY_IS_NULL_RESURFACE_PATINOIRES = """UPDATE patinoires SET resurface =
+NULLIF(resurface, 'None');"""
+DELETE_UGLY_PARENTHESIS = """UPDATE patinoires SET nom_pat =  REPLACE(
+nom_pat,'()', '')"""
 URL_XML_GLISSADES = "http://www2.ville.montreal.qc.ca/services_citoyens" \
-                    "/pdf_transfert/L29_GLISSADE.xml"
-INSERT_GLISSADES = "INSERT INTO glissades (nom, nom_arr, cle, " \
-                   "date_maj, ouvert, deblaye, condition) VALUES (?, ?, " \
-                   "?, ?, ?, ?, ?);"
-DROP_GLISSADES = "DROP TABLE IF EXISTS glissades;"
-CREATE_GLISSADES = "CREATE TABLE glissades(id INTEGER PRIMARY KEY " \
-                   "AUTOINCREMENT, nom VARCHAR(200), nom_arr VARCHAR(" \
-                   "100), cle VARCHAR(100), date_maj TEXT," \
-                   "ouvert NUMERIC, deblaye NUMERIC, " \
-                   "condition VARCHAR(100));"
-EMPTY_IS_NULL_OUVERT_GLISSADES = "UPDATE glissades SET ouvert = NULLIF(" \
-                                 "ouvert, " \
-                                 "'None');"
-EMPTY_IS_NULL_DEBLAYE_GLISSADES = "UPDATE glissades SET deblaye = NULLIF(" \
-                                  "deblaye, " \
-                                  "'None');"
+                    "" + "/pdf_transfert/L29_GLISSADE.xml"
+INSERT_GLISSADES = """INSERT INTO glissades (nom, nom_arr, cle, date_maj,
+ouvert, deblaye, condition) VALUES (?, ?, ?, ?, ?, ?, ?);"""
+DROP_GLISSADES = """DROP TABLE IF EXISTS glissades;"""
+CREATE_GLISSADES = """CREATE TABLE glissades(id INTEGER PRIMARY KEY
+AUTOINCREMENT, nom VARCHAR(200), nom_arr VARCHAR(100), cle VARCHAR(100),
+date_maj TEXT, ouvert NUMERIC, deblaye NUMERIC, condition VARCHAR(100));"""
+EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET ouvert = NULLIF(
+ouvert, 'None');"""
+EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET deblaye = NULLIF(
+deblaye, 'None');"""
 
 
-################################################################################
-# STATIC FUNCTIONS
-################################################################################
+###############################################################################
+# STATIC FUNCTIONS FOR DATABASE OBJECT #
+###############################################################################
 
 
 def get_csv_data_from_url(url):
@@ -102,7 +92,7 @@ def get_xml_data_from_url(url):
 def download_xml_file_from_url(url):
     with requests.Session() as s:
         response = s.get(url)
-    content = response.content
+    content = response.content.decode('utf-8')
     with open('patinoires.xml', 'wb') as file:
         file.write(content)
 
@@ -112,6 +102,7 @@ def print_xml_tree(root):
     return 1
 
 
+# FIXME placeholders problems
 def multiple_query_patinoires(cursor):
     cursor.execute(EMPTY_IS_NULL_OUVERT_PATINOIRES)
     cursor.execute(EMPTY_IS_NULL_DEBLAYE_PATINOIRES)
@@ -120,6 +111,7 @@ def multiple_query_patinoires(cursor):
     cursor.execute(DELETE_UGLY_PARENTHESIS)
 
 
+# FIXME placeholders problems
 def multiple_query_piscines(cursor, rows):
     cursor.executemany(INSERT_PISCINES, rows)
     cursor.execute(DELETE_TITLES_PISCINES)
@@ -169,21 +161,33 @@ def get_glissades_fields(glissade):
     return cle, condition, date_maj, deblaye, nom, nom_arr, ouvert
 
 
-################################################################################
-# DATABASE OBJECT
-################################################################################
+###############################################################################
+# DATABASE OBJECT #
+###############################################################################
+
+
+def cursor_records_to_dictionnary(cursor):
+    records = cursor.fetchall()
+    record_list = []
+    column_names = [column[0] for column in cursor.description]
+    for record in records:
+        record_list.append(dict(zip(column_names, record)))
+    return record_list
+
+
+"""Definition of a Database object"""
 
 
 class Database:
-    ############################################################################
-    # CONSTRUCTOR
-    ############################################################################
+    ###########################################################################
+    # CONSTRUCTOR #
+    ###########################################################################
     def __init__(self):
         self.connection = None
 
-    ############################################################################
-    # FUNCTIONS
-    ############################################################################
+    ###########################################################################
+    # FUNCTIONS #
+    ###########################################################################
 
     def get_connection(self):
         """Open database connection. Should be closed after use"""
@@ -223,8 +227,8 @@ class Database:
             for j, nom in enumerate(noms_pats):
                 nom_pat = nom.text.strip()
                 for k in range(int(len(conditions) / len(noms_pats))):
-                    arrose, date_heure, deblaye, ouvert, resurface = get_conditions_fields(
-                        conditions, j, k, noms_pats)
+                    arrose, date_heure, deblaye, ouvert, resurface = \
+                        get_conditions_fields(conditions, j, k, noms_pats)
                     cursor.execute(INSERT_PATINOIRES, (
                         nom_arr, nom_pat, date_heure, ouvert, deblaye, arrose,
                         resurface))
@@ -240,8 +244,8 @@ class Database:
         glissades = get_xml_data_from_url(URL_XML_GLISSADES)
         final = []
         for glissade in glissades:
-            cle, condition, date_maj, deblaye, nom, nom_arr, ouvert = get_glissades_fields(
-                glissade)
+            cle, condition, date_maj, deblaye, nom, nom_arr, ouvert = \
+                get_glissades_fields(glissade)
             total = (nom.text.strip(), nom_arr.text.strip(), cle.text.strip(),
                      date_maj.text.strip(), ouvert.text.strip(),
                      deblaye.text.strip(), condition.text.strip())
@@ -254,6 +258,7 @@ class Database:
         self.disconnect()
 
     def create_piscines_installations_aquatiques_table(self):
+        """create the piscines table in database object"""
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute(DROP_PISCINES)
@@ -263,6 +268,7 @@ class Database:
         self.disconnect()
 
     def create_glissades_table(self):
+        """create the glissades table in database object"""
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute(DROP_GLISSADES)
@@ -272,6 +278,7 @@ class Database:
         self.disconnect()
 
     def create_patinoires_table(self):
+        """create patinoires table in database object"""
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute(DROP_PATINOIRES)
@@ -280,62 +287,81 @@ class Database:
         connection.close()
         self.disconnect()
 
-################################################################################
-# END OF FILE
-################################################################################
-# def get_five_last_articles(self, today_date):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#
-#     cursor.execute(
-#         "SELECT * FROM article WHERE date_publication <= \
-#             ? ORDER BY date_publication DESC LIMIT 5", (today_date,)
-#     )
-#     return self.to_dict("article", cursor)
+    def get_piscines_installations_list_from_arrondissement(self,
+                                                            arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT type, nom FROM
+        piscines_installations_aquatiques
+        WHERE arrondissement LIKE ?;""", ('%' + arrondissement + '%',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
 
-# def get_all_articles(self):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#
-#     cursor.execute("SELECT * FROM article ORDER BY date_publication DESC")
-#     return self.to_dict("article", cursor)
+    def get_patinoires_installations_list_from_arrondissement(self,
+                                                              arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom_pat FROM patinoires WHERE nom_arr
+        LIKE ?;""", ('%' + arrondissement + '%',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
 
-# def insert_article(self, article):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#
-#     cursor.execute(
-#         "INSERT INTO article (titre, identifiant, auteur,\
-#             date_publication, paragraphe) VALUES (?, ?, ?, ?, ?)",
-#         [article[0], article[1], article[2], article[3], article[4]],
-#     )
-#     connection.commit()
-#     return 1
+    def get_glissades_installations_list_from_arrondissement(self,
+                                                             arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom FROM
+           glissades WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
 
-# def modify_article(self, titre, identifiant, paragraphe):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#     cursor.execute(
-#         "UPDATE article SET titre = ?, \
-#             paragraphe = ? WHERE identifiant = ?",
-#         (titre, paragraphe, identifiant)
-#     )
-#     connection.commit()
-#     return 1
+    def get_piscines_installations_2021(self):
+        """return a list of all iscines updated in 2021"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM
+           piscines_installations_aquatiques ORDER BY nom ASC;""")
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
 
-# def get_article_by_identifiant(self, identifiant):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#
-#     cursor.execute(
-#         "SELECT * FROM article WHERE identifiant = ?", (identifiant,))
-#     return self.to_dict("article", cursor)
+    def get_patinoires_installations_2021(self):
+        """return a list of all patinoires updated in 2021"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM
+           patinoires WHERE date_heure >= '2021-1-1' ORDER BY nom_pat ASC;""")
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
 
-# def get_search_articles(self, search):
-#     connection = self.get_connection()
-#     cursor = connection.cursor()
-#
-#     cursor.execute("SELECT * FROM article WHERE titre LIKE ? OR\
-#         paragraphe LIKE ? ORDER BY date_publication DESC",
-#                    ('%'+search+'%', '%'+search+'%'))
-#     return self.to_dict("article", cursor)
+    def get_glissades_installations_2021(self):
+        """return a list of all installations updated in 2021"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM
+           glissades WHERE date_maj >= '2021-1-1' ORDER BY nom ASC;""")
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+###############################################################################
+# END OF FILE #
+###############################################################################

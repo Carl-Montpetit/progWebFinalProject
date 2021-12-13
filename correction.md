@@ -1,5 +1,9 @@
 # Points complétés pour le projet de session
 
+> ⚠️Voir le fichier `README.md` pour les procédures de mise en fonction de la machine virtuelle et autres détails pertinents!
+>
+> ⚠️Noter que lorsque `eth1` est mentionné, il s'agit de l'adresse `ip` fournit par la machine virtuelle et il est toujours question du `port 5000`.
+
 ## Point A1 (15 points)
 
 > Trois listes obtenues par requêtes `HTTP` et stocké dans une base de données 
@@ -85,6 +89,7 @@ Pour tester ce point il faut :
 
    ```bash
    npm i -g raml2html
+   …
    ```
 
 1. Lancer la commande suivante pour convertir le fichier `raml` en fichier `HTML` :
@@ -93,7 +98,7 @@ Pour tester ce point il faut :
    raml2html services.raml > templates/services.html
    ```
 
-1. Lancer la route `http://192.168.56.7:5000/doc` dans un navigateur pour voir la documentation des `services REST ` de l'application.
+1. Lancer la route `http://eth1:5000/doc` dans un navigateur pour voir la documentation des `services REST ` de l'application.
 
 > ⚠️Noter que j'ai essayé d'implémenter une fonction comme ceci :
 >
@@ -116,10 +121,55 @@ Pour tester ce point il faut :
 Pour tester ce point il faut :
 
 1. Écrire une route dans `l'URL` en spécifiant un <u>paramètre</u> au **query string** : 
-   - Ex : `http://192.168.56.7:5000/installations?arrondissement=Verdun`
+   - Ex : `http://eth1:5000/installations?arrondissement=Verdun`
 1. La fonction python attachée à la route `http://192.168.56.7:5000/installations` va être exécutée à l'aide de `Flask` . 
 1. Cette fonction va aller chercher les données des trois tables dans la base de données contenant cette chaîne de caractère dans les enregistrements et va retourner les enregistrements des installations correspondants à l'arrondissement pour chacune des tables.
 1. Le contenue des trois tables sera empilés dans une liste avant d'être transformé en `format JSON`.
 1. Le résultat retournée par cette route sera affiché en `format JSON` <u>sur le navigateur</u>.
 
 > 💡Il est recommandé de tester ce point avec un outil comme `Postman`.
+>
+> ⚠️Il est important de noter que le service REST retourne **tous les installations** dont le query string de longueur entre 4 et 40 caractères **est contenue dans le nom de l'arrondissement**!
+>
+> Ex : `http://eth1:5000/installations?arrondissement=Verd` 
+>
+> Fonctionne aussi!
+>
+> 🔎Le but est de laisser la chance à l'utilisateur de trouver ce dont il cherche avec plus d'aisance.
+
+## Point A5 (10 points)
+
+> Une application JavaScript/HTML permet de saisir un arrondissement à partir d'un formulaire HTML. 
+>
+> Lorsque l'utilisateur lance la recherche, une requête asynchrone contenant l'arrondissement saisis est envoyée à la route définie en A4. Lorsque la réponse asynchrone revient, l'application affiche la liste des installations dans un tableau. L'application est disponible sur la page d'accueil du serveur (route
+>
+> « / »).
+
+####  ==A COMPLETER==
+
+## Point C1 (10 points)
+
+> Le système offre un `service REST` permettant d'obtenir la **liste des installations** dont les données ont été **mises à jour en 2021**. 
+> Pour chaque installation, on indique **tout l'information connue**. 
+> La liste est triée en **ordre croissant du nom** de l'installation.
+
+Pour tester ce point il faut :
+
+1. Lancer dans le navigateur la route : `http://eth1:5000/installations/2021`
+1. Cela va générer une page contenant la liste de **tous les informations** concernant les installations mise à jour en 2021 en `format JSON`.
+
+> ⚠️Le format de la liste n'était pas spécifié j'ai donc fait le choix d'utiliser le `format JSON`.
+
+## Point C2 (10 points)
+
+> Le système offre un service permettant d'obtenir exactement les mêmes données que le point `C1` mais en `format XML`. L'encodage de caractères doit être `UTF-8`.
+
+Pour tester ce point il faut :
+
+1. Lancer la route suivante dans un navigateur : `http://eth1:5000/installations/2021/installations-2021.xml`
+
+
+
+## Point c3 (5 points)
+
+> Le système offre un service permettant d'obtenir exactement les mêmes données que le point `C1` mais en format `CSV`. L'encodage de caractères doit être `UTF-8`.
