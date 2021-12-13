@@ -14,24 +14,24 @@ MONC08069000
 >Le projet consiste à récupérer un ensemble de données provenant de la ville de Montréal et d'offrir des services à partir de ces données. Il s'agit de données ouvertes à propos d'installations pour faire des activités sportives.
 ## Technologies utilisées
 
-- HTML5
-- CSS3
-- JavaScript
-- Python3
-- Bootstrap3
-- SQLite3
-- Vagrant 2.2.19
-- Virtualbox 6.1
-- Git 2.34.0
-- Flask 2.0.2
-- Werkzeug 2.0.2
-- Jinja2
+- `HTML5`
+- `CSS3`
+- `JavaScript`
+- `Python3`
+- `Bootstrap3`
+- `SQLite3`
+- `Vagrant 2.2.19`
+- `Virtualbox 6.1`
+- `Git 2.34.0`
+- `Flask 2.0.2`
+- `Werkzeug 2.0.2`
+- `Jinja2`
 
 ## Instructions
 
 #### Pour lancer l'application avec **Vagrant** :
 
-> Initialement, à la racine du projet :
+> Initialement, à la racine du projet…
 
 1. Lancer la commande `vagrant up` pour créer la machine virtuel (avec le provider `virtualbox`).
 
@@ -85,10 +85,5 @@ MONC08069000
 > - **Password** : `vagrant`
 
 ![image-20211125123522340](https://tva1.sinaimg.cn/large/008i3skNgy1gwrx0e7y4tj31440tmdnm.jpg)
-
-## Sources
-
-- Source pour la barre de navigation avec bootstrap3 utilisée :
-  - `https://getbootstrap.com/docs/3.4/components/#navbar`
 
 ---

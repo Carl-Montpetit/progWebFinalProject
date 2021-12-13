@@ -155,8 +155,8 @@ Pour tester ce point il faut :
 
 Pour tester ce point il faut :
 
-1. Lancer dans le navigateur la route : `http://eth1:5000/installations/2021`
-1. Cela va générer une page contenant la liste de **tous les informations** concernant les installations mise à jour en 2021 en `format JSON`.
+1. Lancer dans le navigateur la route : `http://eth1:5000/installations/2021`.
+1. Cela va générer une page contenant la liste de **tous les informations** concernant les installations mise à jour en 2021 en `format JSON`. Sinon utiliser la barre de navigation de l'application, clicker sur le bouton `Installations-2021 XML Format`.
 
 > ⚠️Le format de la liste n'était pas spécifié j'ai donc fait le choix d'utiliser le `format JSON`.
 
@@ -166,10 +166,21 @@ Pour tester ce point il faut :
 
 Pour tester ce point il faut :
 
-1. Lancer la route suivante dans un navigateur : `http://eth1:5000/installations/2021/installations-2021.xml`
-
-
+1. Lancer la route suivante dans un navigateur : `http://eth1:5000/installations/2021/installations-2021.xml` ou d'utiliser la barre de navigation et clicker sur  le bouton `Installations-2021 XML Format`.
+1. Une page avec le contenue en `format XML` va s'afficher **sur le navigateur**.
 
 ## Point c3 (5 points)
 
 > Le système offre un service permettant d'obtenir exactement les mêmes données que le point `C1` mais en format `CSV`. L'encodage de caractères doit être `UTF-8`.
+
+Pour tester ce point il faut :
+
+1. Lancer la route suivante dans un navigateur : `http://eth1:5000/installations/2021/installations-2021.csv` ou d'utiliser la barre de navigation et clicker sur le sur le bouton `Installations-2021 CSV Format`.
+1. Un fichier  en `format CSV` va être téléchargé contenant le résultat.
+
+> ⚠️Noter que le `format CSV` est un choix horrible pour la modélisation de données du logiciel cela rend la lecture difficile et plusieurs champs sont inutiles pour certains types de données. Comme par exemple, les conditions des patinoires qui sont propre à eux etc…
+>
+> Or, `JSON` et `XML` sont des choix de qualités (par préférence JSON).
+>
+> 💡Il est clair qu'il existe peut-être une façon de bien générer le format `CSV` mais on va en rester là avec le temps impartie.
+

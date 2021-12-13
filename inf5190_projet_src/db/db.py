@@ -6,7 +6,6 @@ import xml.etree.ElementTree as elementTree
 ###############################################################################
 # CONSTANTS #
 ###############################################################################
-# FIXME ⚠️check placeholders⚠️
 URL_CSV_PISCINES = "https://data.montreal.ca/dataset/4604afb7-a7c4-4626" \
                    "-" + "a3ca-e136158133f2/resource/cbdca706-569e-4b4a-805d" \
                          "-" + "9af73af03b14/download/piscines.csv"
@@ -14,18 +13,10 @@ INSERT_PISCINES = """INSERT INTO piscines_installations_aquatiques (id_uev,
 type,nom,arrondissement,adresse,propriete,gestion,point_x,point_y,
 equipement,longitude,latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
 DROP_PISCINES = """DROP TABLE IF EXISTS piscines_installations_aquatiques;"""
-DESTROY_NBSP_PISCINES = """UPDATE piscines_installations_aquatiques SET
-adresse  = REPLACE(adresse, ' ', ' ');"""
+# DESTROY_NBSP_PISCINES = """UPDATE piscines_installations_aquatiques SET
+# adresse  = REPLACE(adresse, ' ', ' ');"""
 DELETE_TITLES_PISCINES = """DELETE FROM piscines_installations_aquatiques
 WHERE id=1"""
-EMPTY_IS_NULL_ADRESSE = """UPDATE piscines_installations_aquatiques SET
-adresse = NULLIF(adresse, '');"""
-EMPTY_IS_NULL_PROPRIETE = """UPDATE piscines_installations_aquatiques SET
-propriete = NULLIF(propriete, '');"""
-EMPTY_IS_NULL_GESTION = """UPDATE piscines_installations_aquatiques SET
-gestion  = NULLIF(gestion, '');"""
-EMPTY_IS_NULL_EQUIPEMENT = """UPDATE piscines_installations_aquatiques SET
-equipement = NULLIF(equipement, '');"""
 CREATE_PISCINES = """CREATE TABLE piscines_installations_aquatiques(
 id INTEGER  PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100),
 nom  VARCHAR(100), arrondissement VARCHAR(100), adresse
@@ -41,16 +32,6 @@ DROP_PATINOIRES = """DROP TABLE IF EXISTS patinoires;"""
 CREATE_PATINOIRES = """CREATE TABLE patinoires(id INTEGER PRIMARY KEY
 AUTOINCREMENT, nom_arr VARCHAR(200), nom_pat VARCHAR(100), date_heure TEXT,
 ouvert NUMERIC, deblaye NUMERIC, arrose NUMERIC, resurface NUMERIC);"""
-EMPTY_IS_NULL_OUVERT_PATINOIRES = """UPDATE patinoires SET ouvert = NULLIF(
-ouvert, 'None');"""
-EMPTY_IS_NULL_DEBLAYE_PATINOIRES = """UPDATE patinoires SET deblaye =
-NULLIF(deblaye, 'None');"""
-EMPTY_IS_NULL_ARROSE_PATINOIRES = """UPDATE patinoires SET arrose = NULLIF(
-arrose, 'None');"""
-EMPTY_IS_NULL_RESURFACE_PATINOIRES = """UPDATE patinoires SET resurface =
-NULLIF(resurface, 'None');"""
-DELETE_UGLY_PARENTHESIS = """UPDATE patinoires SET nom_pat =  REPLACE(
-nom_pat,'()', '')"""
 URL_XML_GLISSADES = "http://www2.ville.montreal.qc.ca/services_citoyens" \
                     "" + "/pdf_transfert/L29_GLISSADE.xml"
 INSERT_GLISSADES = """INSERT INTO glissades (nom, nom_arr, cle, date_maj,
@@ -59,10 +40,12 @@ DROP_GLISSADES = """DROP TABLE IF EXISTS glissades;"""
 CREATE_GLISSADES = """CREATE TABLE glissades(id INTEGER PRIMARY KEY
 AUTOINCREMENT, nom VARCHAR(200), nom_arr VARCHAR(100), cle VARCHAR(100),
 date_maj TEXT, ouvert NUMERIC, deblaye NUMERIC, condition VARCHAR(100));"""
-EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET ouvert = NULLIF(
-ouvert, 'None');"""
-EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET deblaye = NULLIF(
-deblaye, 'None');"""
+
+
+# EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET ouvert = NULLIF(
+# ouvert, 'None');"""
+# EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET deblaye = NULLIF(
+# deblaye, 'None');"""
 
 
 ###############################################################################
@@ -102,24 +85,9 @@ def print_xml_tree(root):
     return 1
 
 
-# FIXME placeholders problems
-def multiple_query_patinoires(cursor):
-    cursor.execute(EMPTY_IS_NULL_OUVERT_PATINOIRES)
-    cursor.execute(EMPTY_IS_NULL_DEBLAYE_PATINOIRES)
-    cursor.execute(EMPTY_IS_NULL_ARROSE_PATINOIRES)
-    cursor.execute(EMPTY_IS_NULL_RESURFACE_PATINOIRES)
-    cursor.execute(DELETE_UGLY_PARENTHESIS)
-
-
-# FIXME placeholders problems
 def multiple_query_piscines(cursor, rows):
     cursor.executemany(INSERT_PISCINES, rows)
     cursor.execute(DELETE_TITLES_PISCINES)
-    cursor.execute(DESTROY_NBSP_PISCINES)
-    cursor.execute(EMPTY_IS_NULL_ADRESSE)
-    cursor.execute(EMPTY_IS_NULL_EQUIPEMENT)
-    cursor.execute(EMPTY_IS_NULL_GESTION)
-    cursor.execute(EMPTY_IS_NULL_PROPRIETE)
 
 
 def get_conditions_fields(conditions, j, k, noms_pats):
@@ -232,7 +200,7 @@ class Database:
                     cursor.execute(INSERT_PATINOIRES, (
                         nom_arr, nom_pat, date_heure, ouvert, deblaye, arrose,
                         resurface))
-        multiple_query_patinoires(cursor)
+        # multiple_query_patinoires(cursor)
         connection.commit()
         connection.close()
         self.disconnect()
@@ -251,8 +219,6 @@ class Database:
                      deblaye.text.strip(), condition.text.strip())
             final.append(total)
         cursor.executemany(INSERT_GLISSADES, final)
-        cursor.execute(EMPTY_IS_NULL_OUVERT_GLISSADES)
-        cursor.execute(EMPTY_IS_NULL_DEBLAYE_GLISSADES)
         connection.commit()
         connection.close()
         self.disconnect()
@@ -344,7 +310,8 @@ class Database:
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
-           patinoires WHERE date_heure >= '2021-1-1' ORDER BY nom_pat ASC;""")
+           patinoires WHERE date_heure >= ? ORDER BY nom_pat
+           ASC;""", ('2021-1-1',))
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()
@@ -356,7 +323,7 @@ class Database:
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
-           glissades WHERE date_maj >= '2021-1-1' ORDER BY nom ASC;""")
+           glissades WHERE date_maj >= ? ORDER BY nom ASC;""", ('2021-1-1',))
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()

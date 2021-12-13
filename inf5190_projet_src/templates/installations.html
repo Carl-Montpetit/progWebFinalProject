@@ -1,20 +1,26 @@
 {% extends "index.html" %}
+{#{{ url_for('get_installations_for_arrondissement') }}#}
 {% block title %}🏒Installations{% endblock title %}
-
 {% block content %}
-    <h1 id="title-main" class="text-center">Districts Data for Activities Installations of Montreal (DDAIM)</h1>
-    <h3 class="text-center text-primary">Enter the district you would like to see the installations data!</h3>
-    <form id="district-form" name="district-form" class="container form-control"
-          action="{{ url_for('get_installations_for_arrondissement') }}"
-          action="GET">
+    <h1 id="title-main" class="text-center">Districts Data for Activities
+        Installations of Montreal (DDAIM)</h1>
+    <h3 class="text-center text-primary">Enter the district you would like to
+        see the installations data!</h3>
+    <form id="district-form" name="district-form" class="container
+    form-control" onSubmit="sendRequest()"
+          action=""
+          method="get">
         <label for="district">District (Arrondissement)</label>
-        <input type="text" name="arrondissement" class="form-control" id="district"
-               placeholder="Enter District" required minlength="4" maxlength="40">
+        <input type="text" name="arrondissement" class="form-control"
+               id="district"
+               placeholder="Enter District" required minlength="4"
+               maxlength="40">
         <small id="district-small">Ex: Rosemont</small>
-        <button id="district-btn" type="submit" class="btn btn-primary">Submit</button>
+        <button id="district-btn" type="submit" class="btn btn-primary">
+            Submit
+        </button>
     </form>
     <div>
         <p id="result"></p>
     </div>
-    <script src="home.js"></script>
 {% endblock content %}

@@ -30,8 +30,8 @@ from xml.dom.minidom import parseString, parse
 ###############################################################################
 ERROR_TEMPLATE = 'error.html'
 ERR_MSG_ARR_QUERY_FORMAT = 'Error, the arrondissement name format is invalid!'
-ERR_MSG_NO_INSTALLATIONS_FOR_ARR = "Error, there's no installations for " \
-                                   "that arrondissement!"
+ERR_MSG_NO_INSTALLATIONS_FOR_ARR = "Error, there's no installations found " \
+                                   "for that district!"
 ###############################################################################
 # INITIALIZE FLASK APPLICATION #
 ###############################################################################
@@ -137,26 +137,20 @@ def main_page():
 def get_installations_for_arrondissement():
     """
     Return all installations for a specific query string entered as an
-    arrondissement in JSON format on the browser.
-    GET /installations?arrondissement=Verdun
+    arrondissement in JSON format on the browser. If there's no query
+    string, render a html template.
     """
     # Getting the query string parameter for arrondissement
     arrondissement = str(request.args.get('arrondissement', None))
-    if arrondissement is None:
+    if arrondissement is None or arrondissement == '' or arrondissement == \
+            'None':
         return render_template('installations.html')
-    if len(arrondissement) < 6 or len(arrondissement) > 40 or not \
+    elif len(arrondissement) < 4 or len(arrondissement) > 40 or not \
             isinstance(arrondissement, str):
         return render_template('error.html',
                                error=ERR_MSG_ARR_QUERY_FORMAT), 404
-    installations_list = get_data_for_arrondissement(
-        arrondissement)
-    if installations_list[0] is None or len(installations_list[0]) == 0:
-        installations_list[0].clear()
-    if installations_list[1] is None or len(installations_list[1]) == 0:
-        installations_list[1].clear()
-    if installations_list[2] is None or len(installations_list[2]) == 0:
-        installations_list[2].clear()
-    if installations_list[0] is None:
+    installations_list = get_data_for_arrondissement(arrondissement)
+    if installations_list is None or len(installations_list) == 0:
         return render_template('error.html',
                                error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
     json_installations = jsonify(installations_list)
@@ -165,48 +159,35 @@ def get_installations_for_arrondissement():
 
 @app.route('/installations/2021', methods=['GET'])
 def get_installations_list_2021():
-    """Return all installations data updated in 2021 in JSON format."""
     installations_list = get_installations_data_2021()
-    if installations_list[0] is None or len(installations_list[0]) == 0:
-        installations_list[0].clear()
-    if installations_list[1] is None or len(installations_list[1]) == 0:
-        installations_list[1].clear()
-    if installations_list[2] is None or len(installations_list[2]) == 0:
-        installations_list[2].clear()
-    if installations_list[0] is None:
-        return render_template('error.html',
-                               error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
+    if installations_list is None or len(installations_list) == 0:
+        return abort(404)
     formated_data = jsonify(installations_list)
     return formated_data, 200
 
 
-@app.route('/installations/2021/installations-2021.<string:format>',
+@app.route('/installations/2021/installations-2021.xml',
            methods=['GET'])
-def get_formated_installations_list_2021(format):
-    """
-    Return all installations for a specific query string entered as an
-    arrondissement in JSON format on the browser.
-    GET /installations?arrondissement=Verdun
-    """
+def get_XML_formated_installations_list_2021():
+    """Return all installations data updated in 2021 in JSON format."""
     installations_list = get_installations_data_2021()
-    if installations_list[0] is None or len(installations_list[0]) == 0:
-        installations_list[0].clear()
-    if installations_list[1] is None or len(installations_list[1]) == 0:
-        installations_list[1].clear()
-    if installations_list[2] is None or len(installations_list[2]) == 0:
-        installations_list[2].clear()
-    if installations_list[0] is None:
-        return render_template('error.html',
-                               error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
-    if (format == 'xml'):
-        formated_data = parseString(
-            dicttoxml(installations_list)).toprettyxml()
-        return Response(formated_data, content_type='application/xhtml+xml')
-    elif (format == 'csv'):
-        df = pd.DataFrame(installations_list)
-        df.to_csv('data.csv', index=False, header=False, encoding='utf-8')
-        csv_string = open('data.csv', mode='r', encoding='utf-8')
-        return Response(csv_string, content_type='img/svg+xml')
+    if installations_list is None or len(installations_list) == 0:
+        return abort(404)
+    formated_data = parseString(dicttoxml(installations_list)).toprettyxml()
+    return Response(formated_data, content_type='application/xhtml+xml')
+
+
+@app.route('/installations/2021/installations-2021.csv', methods=['GET'])
+def get_CSV_formated_installations_list_2021():
+    """Return all installations data updated in 2021 in CSV format."""
+    installations_list = get_installations_data_2021()
+    if installations_list is None or len(installations_list) == 0:
+        return abort(404)
+    formated_data = parseString(dicttoxml(installations_list)).toprettyxml()
+    df = pd.DataFrame(installations_list)
+    df.to_csv('data.csv', index=False, header=False, encoding='utf-8')
+    csv_string = open('data.csv', mode='r', encoding='utf-8')
+    return Response(csv_string, content_type='img/svg+xml')
 
 
 def get_data_for_arrondissement(arrondissement):

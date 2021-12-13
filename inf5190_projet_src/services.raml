@@ -1,7 +1,7 @@
 #%RAML 1.0
 title: Documentation of REST services of the DDAIM by Carl Montpetit
 version: 1.0
-baseUri: http://192.168.56.7:5000
+baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
 ###############################################################################
 /: # optional resource
   description:
@@ -35,11 +35,15 @@ baseUri: http://192.168.56.7:5000
       arrondissements.
     get:
       responses:
-        404:
-          description: No ressource evailable to find without query string
+        200:
+          description:
+            A page containing a search input field was successfully rendered.
           body:
             text/html:
-    ###########################################################################
+        404:
+          description: No ressource evailable to find without query string.
+          body:
+            text/html:
     /{arrondissement}:
       uriParameters:
         arrondissement:
@@ -60,6 +64,8 @@ baseUri: http://192.168.56.7:5000
             description:
               There's no installations for that specific query string or the
               format of query string is invalid.
+            body:
+              text/html:
         headers:
           Authorization:
             type: string
@@ -71,7 +77,40 @@ baseUri: http://192.168.56.7:5000
             description:
               List of all installations updated in 2021 rendered
               successfully.
+            body:
+              application/json:
           404:
             description:
-              There's no ressource data for 2021.
-###############################################################################
+              There's no ressource data for 2021 installations.
+            body:
+              text/html:
+      #########################################################################
+      /installations-2021.xml:
+        get:
+          responses:
+            200:
+              description:
+                List of all installations updated in 2021 rendered
+                successfully.
+              body:
+                application/xhtml+xml:
+            404:
+              description:
+                There's no ressource data for 2021 installations.
+              body:
+                text/html:
+      #########################################################################
+      /installations-2021.csv:
+        get:
+          responses:
+            200:
+              description:
+                List of all installations updated in 2021 rendered
+                successfully.
+              body:
+                application/xhtml+xml:
+            404:
+              description:
+                There's no ressource data for 2021 installations.
+              body:
+                img/svg+xml:

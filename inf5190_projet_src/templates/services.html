@@ -186,7 +186,7 @@
         <div class="col-md-9" role="main">
           <div class="page-header">
             <h1>Documentation of REST services of the DDAIM by Carl Montpetit <small>version 1.0</small></h1>
-            <p>http://192.168.56.7:5000</p>
+            <p>http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)</p>
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -371,8 +371,13 @@
                           <!-- Tab panes -->
                           <div class="tab-content">
                             <div class="tab-pane active" id="installations_get_response">
+                              <h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2>
+                              <p>A page containing a search input field was successfully rendered.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: text/html</p>
+                              <p><strong>Type</strong>: any</p>
                               <h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2>
-                              <p>No ressource evailable to find without query string</p>
+                              <p>No ressource evailable to find without query string.</p>
                               <h3>Body</h3>
                               <p><strong>Media type</strong>: text/html</p>
                               <p><strong>Type</strong>: any</p>
@@ -460,6 +465,9 @@
                               <p><strong>Type</strong>: any</p>
                               <h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2>
                               <p>There&#39;s no installations for that specific query string or the format of query string is invalid.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: text/html</p>
+                              <p><strong>Type</strong>: any</p>
                             </div>
                           </div>
                         </div>
@@ -517,8 +525,144 @@
                             <div class="tab-pane active" id="installations_2021_get_response">
                               <h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2>
                               <p>List of all installations updated in 2021 rendered successfully.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: application/json</p>
+                              <p><strong>Type</strong>: any</p>
                               <h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2>
-                              <p>There&#39;s no ressource data for 2021.</p>
+                              <p>There&#39;s no ressource data for 2021 installations.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: text/html</p>
+                              <p><strong>Type</strong>: any</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-white resource-modal">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="collapsed" data-toggle="collapse" href="#panel_installations_2021_installations_2021_xml">
+                        <span class="parent">//installations/2021</span>/installations-2021.xml
+                      </a>
+                      <span class="methods">
+            <a href="#installations_2021_installations_2021_xml_get">
+<!-- modal shown by hashchange event -->
+              <span class="badge badge_get">get</span>
+                      </a>
+                      </span>
+                    </h4>
+                  </div>
+                  <div id="panel_installations_2021_installations_2021_xml" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="list-group">
+                        <div onclick="window.location.href = '#installations_2021_installations_2021_xml_get'" class="list-group-item">
+                          <span class="badge badge_get">get</span>
+                          <div class="method_description">
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" tabindex="0" id="installations_2021_installations_2021_xml_get">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title" id="myModalLabel">
+                            <span class="badge badge_get">get</span>
+                            <span class="parent">//installations/2021</span>/installations-2021.xml
+                          </h4>
+                        </div>
+                        <div class="modal-body">
+
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs">
+                            <li class="active">
+                              <a href="#installations_2021_installations_2021_xml_get_response" data-toggle="tab">Response</a>
+                            </li>
+                          </ul>
+
+                          <!-- Tab panes -->
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="installations_2021_installations_2021_xml_get_response">
+                              <h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2>
+                              <p>List of all installations updated in 2021 rendered successfully.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: application/xhtml+xml</p>
+                              <p><strong>Type</strong>: any</p>
+                              <h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2>
+                              <p>There&#39;s no ressource data for 2021 installations.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: text/html</p>
+                              <p><strong>Type</strong>: any</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-white resource-modal">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="collapsed" data-toggle="collapse" href="#panel_installations_2021_installations_2021_csv">
+                        <span class="parent">//installations/2021</span>/installations-2021.csv
+                      </a>
+                      <span class="methods">
+            <a href="#installations_2021_installations_2021_csv_get">
+<!-- modal shown by hashchange event -->
+              <span class="badge badge_get">get</span>
+                      </a>
+                      </span>
+                    </h4>
+                  </div>
+                  <div id="panel_installations_2021_installations_2021_csv" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="list-group">
+                        <div onclick="window.location.href = '#installations_2021_installations_2021_csv_get'" class="list-group-item">
+                          <span class="badge badge_get">get</span>
+                          <div class="method_description">
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" tabindex="0" id="installations_2021_installations_2021_csv_get">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title" id="myModalLabel">
+                            <span class="badge badge_get">get</span>
+                            <span class="parent">//installations/2021</span>/installations-2021.csv
+                          </h4>
+                        </div>
+                        <div class="modal-body">
+
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs">
+                            <li class="active">
+                              <a href="#installations_2021_installations_2021_csv_get_response" data-toggle="tab">Response</a>
+                            </li>
+                          </ul>
+
+                          <!-- Tab panes -->
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="installations_2021_installations_2021_csv_get_response">
+                              <h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2>
+                              <p>List of all installations updated in 2021 rendered successfully.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: application/xhtml+xml</p>
+                              <p><strong>Type</strong>: any</p>
+                              <h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2>
+                              <p>There&#39;s no ressource data for 2021 installations.</p>
+                              <h3>Body</h3>
+                              <p><strong>Media type</strong>: img/svg+xml</p>
+                              <p><strong>Type</strong>: any</p>
                             </div>
                           </div>
                         </div>
