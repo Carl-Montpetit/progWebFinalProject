@@ -7,7 +7,7 @@
             {% block styles %}
                 {{ super() }}
                 <link rel="stylesheet"
-                      href="style.css">
+                      href="{{ url_for('static', filename='style.css') }}">
             {% endblock styles %}
             {% block metas %}
                 {{ super() }}
@@ -24,7 +24,7 @@
             {% include "footer.html" %}
             {% block scripts %}
                 {{ super() }}
-                <script src="app.js"></script>
+                <script src="{{ url_for('static', filename='main.js') }}"></script>
             {% endblock scripts %}
         {% endblock body %}
     {% endblock html %}

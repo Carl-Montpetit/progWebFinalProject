@@ -23,9 +23,9 @@ nom  VARCHAR(100), arrondissement VARCHAR(100), adresse
 VARCHAR(100), propriete VARCHAR(100), gestion  VARCHAR(
 100), point_x INTEGER, point_y INTEGER, equipement
 VARCHAR(100), longitude INTEGER, latitude INTEGER);"""
-URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-476f" \
-                     "-95bd -a1ce1648a98c/resource/5d1859cc-2060-4def-903f" \
-                     "-db 24408bacd0/download/l29-patinoire.xml"
+URL_XML_PATINOIRES = "https://data.montreal.ca/dataset/225ac315-49fe-" \
+                     "476f-95bd-a1ce1648a98c/resource/5d1859cc-2060-4def-" \
+                     "903f-db24408bacd0/download/l29-patinoire.xml"
 INSERT_PATINOIRES = """INSERT INTO patinoires (nom_arr, nom_pat, date_heure,
 ouvert, deblaye, arrose, resurface) VALUES (?, ?, ?, ?, ?, ?, ?);"""
 DROP_PATINOIRES = """DROP TABLE IF EXISTS patinoires;"""

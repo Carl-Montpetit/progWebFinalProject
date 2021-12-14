@@ -1,19 +1,19 @@
-{% extends "home.html" %}
+{% extends "index.html" %}
 {% block title %}💾DDAIM{% endblock title %}
 {% block content %}
-    <div id="result" class="container">
-        <h2 id="title-result" class="text-center">Here's a dropdown list that
+    <div class="container">
+        <h3 id="title-dropdown" class="text-center">Here's a dropdown list that
         contains all
             installations
-            available!</h2>
+            available!</h3>
         <div id="dropdown" class="dropdown text-center">
-            <button id="dropdown-button" class="btn btn-danger
+            <button id="dropdown-button" class="btn btn-default
             dropdown-toggle"
                     type="button"
                     data-toggle="dropdown">All Installations
                 <span class="caret"></span></button>
-            <ul id="dropdown-menu" name="dropdown-menu"
-                class="dropdown-menu" onchange="onSelectInstallation()">
+            <ul id="dropdown-menu" class="dropdown-menu"
+                onchange="onSelectInstallation()">
                 {% for installation in installations[0] %}
                     <li><a>{{ installation }}</a></li>
                 {% endfor %}

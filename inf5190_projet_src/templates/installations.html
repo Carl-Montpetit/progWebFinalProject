@@ -1,14 +1,16 @@
-{% extends "home.html" %}
+{% extends "index.html" %}
 {#{{ url_for('get_installations_for_arrondissement') }}#}
 {% block title %}🏒Installations{% endblock title %}
 {% block content %}
     <div class="container text-center ">
-        <h1 id="title-main" class="text-center">Districts Data for Activities
+        <h1 id="title-district" class="text-center">Districts Data for
+                                                    Activities
             Installations of Montreal (DDAIM)</h1>
-        <h3 class="text-center text-primary">Enter the district you would like
-            to
-            see the installations data!</h3>
-        <form id="district-form" class="container text-center form-inline">
+        <h3 id="enter-district-msg" class="text-center text-primary">Enter the
+                                                              district you would
+                                                like
+            to see the installations data!</h3>
+        <form id="arrondissement-form" class="container text-center form-inline">
             <div class="form-group">
                 <label for="arrondissement">District (Arrondissement)</label>
                 <input type="text" class="form-control" id="arrondissement"
@@ -19,7 +21,4 @@
             btn-default">Submit</button>
         </form>
     </div>
-    {% block scripts %}
-        <script src="app.js"></script>
-    {% endblock scripts %}
 {% endblock content %}
