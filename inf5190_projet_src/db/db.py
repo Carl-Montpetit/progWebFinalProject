@@ -13,10 +13,34 @@ INSERT_PISCINES = """INSERT INTO piscines_installations_aquatiques (id_uev,
 type,nom,arrondissement,adresse,propriete,gestion,point_x,point_y,
 equipement,longitude,latitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
 DROP_PISCINES = """DROP TABLE IF EXISTS piscines_installations_aquatiques;"""
-# DESTROY_NBSP_PISCINES = """UPDATE piscines_installations_aquatiques SET
-# adresse  = REPLACE(adresse, ' ', ' ');"""
+DESTROY_NBSP_PISCINES = """UPDATE piscines_installations_aquatiques SET
+adresse  = REPLACE(adresse, ?, ?);"""
 DELETE_TITLES_PISCINES = """DELETE FROM piscines_installations_aquatiques
-WHERE id=1"""
+WHERE id=?"""
+EMPTY_IS_NULL_ADRESSE = """UPDATE piscines_installations_aquatiques SET
+adresse = NULLIF(adresse, ?)"""
+EMPTY_IS_NULL_PROPRIETE = """UPDATE piscines_installations_aquatiques SET
+propriete = NULLIF(propriete, ?)"""
+EMPTY_IS_NULL_GESTION = """UPDATE piscines_installations_aquatiques SET
+gestion = NULLIF(gestion, ?)"""
+EMPTY_IS_NULL_EQUIPEMENT = """UPDATE piscines_installations_aquatiques SET
+equipement = NULLIF(equipement, ?)"""
+EMPTY_IS_NULL_OUVERT = """UPDATE patinoires SET
+ouvert = NULLIF(ouvert, ?)"""
+EMPTY_IS_NULL_DEBLAYE = """UPDATE patinoires SET
+deblaye = NULLIF(deblaye, ?)"""
+EMPTY_IS_NULL_ARROSE = """UPDATE patinoires SET
+arrose = NULLIF(arrose, ?)"""
+EMPTY_IS_NULL_RESURFACE = """UPDATE patinoires SET
+resurface = NULLIF(resurface, ?)"""
+EMPTY_IS_NULL_CONDITION = """UPDATE glissades SET
+condition = NULLIF(condition, ?)"""
+EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET
+deblaye = NULLIF(deblaye, ?)"""
+EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET
+ouvert = NULLIF(ouvert, ?)"""
+DESTROY_UGLY_PARENTHESIS = """UPDATE patinoires SET nom_pat = REPLACE(
+nom_pat, ?, ?)"""
 CREATE_PISCINES = """CREATE TABLE piscines_installations_aquatiques(
 id INTEGER  PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100),
 nom  VARCHAR(100), arrondissement VARCHAR(100), adresse
@@ -40,12 +64,6 @@ DROP_GLISSADES = """DROP TABLE IF EXISTS glissades;"""
 CREATE_GLISSADES = """CREATE TABLE glissades(id INTEGER PRIMARY KEY
 AUTOINCREMENT, nom VARCHAR(200), nom_arr VARCHAR(100), cle VARCHAR(100),
 date_maj TEXT, ouvert NUMERIC, deblaye NUMERIC, condition VARCHAR(100));"""
-
-
-# EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET ouvert = NULLIF(
-# ouvert, 'None');"""
-# EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET deblaye = NULLIF(
-# deblaye, 'None');"""
 
 
 ###############################################################################
@@ -74,7 +92,25 @@ def get_xml_data_from_url(url):
 
 def multiple_query_piscines(cursor, rows):
     cursor.executemany(INSERT_PISCINES, rows)
-    cursor.execute(DELETE_TITLES_PISCINES)
+    cursor.execute(DELETE_TITLES_PISCINES, (1,))
+    cursor.execute(EMPTY_IS_NULL_PROPRIETE, ('',))
+    cursor.execute(EMPTY_IS_NULL_GESTION, ('',))
+    cursor.execute(EMPTY_IS_NULL_EQUIPEMENT, ('',))
+    cursor.execute(DESTROY_NBSP_PISCINES, (' ', ' '))
+
+
+def multiple_query_patinoires(cursor):
+    cursor.execute(EMPTY_IS_NULL_OUVERT, ('None',))
+    cursor.execute(EMPTY_IS_NULL_DEBLAYE, ('None',))
+    cursor.execute(EMPTY_IS_NULL_ARROSE, ('None',))
+    cursor.execute(EMPTY_IS_NULL_RESURFACE, ('None',))
+    cursor.execute(DESTROY_UGLY_PARENTHESIS, ('()', ''))
+
+def multiple_query_glissoires(cursor, rows):
+    cursor.executemany(INSERT_GLISSADES, rows)
+    cursor.execute(EMPTY_IS_NULL_DEBLAYE_GLISSADES, ('None',))
+    cursor.execute(EMPTY_IS_NULL_OUVERT_GLISSADES, ('None',))
+    cursor.execute(EMPTY_IS_NULL_CONDITION, ('N/A',))
 
 
 def get_conditions_fields(conditions, j, k, noms_pats):
@@ -189,7 +225,7 @@ class Database:
                     cursor.execute(INSERT_PATINOIRES, (
                         nom_arr, nom_pat, date_heure, ouvert, deblaye, arrose,
                         resurface))
-        # multiple_query_patinoires(cursor)
+        multiple_query_patinoires(cursor)
         connection.commit()
         connection.close()
         self.disconnect()
@@ -199,15 +235,15 @@ class Database:
         connection = self.get_connection()
         cursor = connection.cursor()
         glissades = get_xml_data_from_url(URL_XML_GLISSADES)
-        final = []
+        rows = []
         for glissade in glissades:
             cle, condition, date_maj, deblaye, nom, nom_arr, ouvert = \
                 get_glissades_fields(glissade)
             total = (nom.text.strip(), nom_arr.text.strip(), cle.text.strip(),
                      date_maj.text.strip(), ouvert.text.strip(),
                      deblaye.text.strip(), condition.text.strip())
-            final.append(total)
-        cursor.executemany(INSERT_GLISSADES, final)
+            rows.append(total)
+        multiple_query_glissoires(cursor, rows)
         connection.commit()
         connection.close()
         self.disconnect()

@@ -131,6 +131,12 @@ def service_unavailable(error):
 @app.route('/', methods=['GET'])
 def main_page():
     """Render the main template of the application"""
+    db.create_piscines_installations_aquatiques_table()
+    db.add_piscines_installations_aquatiques_data_to_database()
+    db.create_glissades_table()
+    db.add_glissades_data_to_database()
+    db.create_patinoires_table()
+    db.add_patinoires_data_to_database()
     return render_template('home.html'), 200
 
 
