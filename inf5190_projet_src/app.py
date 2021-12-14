@@ -67,8 +67,9 @@ def scheduled_database_update():
     print('The database was updated at {}'.format(datetime.now(local_time)))
 
 
+# FIXME
 # Update database every day at midnight
-scheduler.add_job(scheduled_database_update, 'cron', hour='5', minute='54',
+scheduler.add_job(scheduled_database_update, 'cron', hour='*', minute='0',
                   day='*')
 scheduler.start()
 
@@ -130,12 +131,6 @@ def service_unavailable(error):
 @app.route('/', methods=['GET'])
 def main_page():
     """Render the main template of the application"""
-    db.create_piscines_installations_aquatiques_table()
-    db.add_piscines_installations_aquatiques_data_to_database()
-    db.create_glissades_table()
-    db.add_glissades_data_to_database()
-    db.create_patinoires_table()
-    db.add_patinoires_data_to_database()
     return render_template('home.html'), 200
 
 
@@ -179,8 +174,8 @@ def get_all_installations_list():
     installations_list = get_all_installations_names()
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
-    return render_template('specific-installation.html', installations=
-    list(installations_list)), 200
+    return render_template('specific-installation.html',
+                           installations=list(installations_list)), 200
 
 
 @app.route('/installations/2021/installations-2021.xml',
@@ -228,8 +223,8 @@ def get_data_for_arrondissement(arrondissement):
     installations_glissades = \
         db.get_glissades_installations_list_from_arrondissement(
             arrondissement)
-    installations_list = (installations_piscines + installations_patinoires + \
-                          installations_glissades)
+    installations_list = (installations_piscines + installations_patinoires
+                          + installations_glissades)
     return installations_list
 
 

@@ -323,7 +323,7 @@ class Database:
         """return a list of all piscines names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom FROM 
+        cursor.execute("""SELECT DISTINCT nom FROM
         piscines_installations_aquatiques;""")
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
@@ -335,7 +335,7 @@ class Database:
         """return a list of all patinoires names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom_pat FROM 
+        cursor.execute("""SELECT DISTINCT nom_pat FROM
         patinoires;""")
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
@@ -347,7 +347,7 @@ class Database:
         """return a list of all patinoires names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom FROM 
+        cursor.execute("""SELECT DISTINCT nom FROM
            glissades;""")
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
