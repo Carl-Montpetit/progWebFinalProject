@@ -54,11 +54,6 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1
       arrondissements.
     get:
       responses:
-        200:
-          description:
-            A page containing a search input field was successfully rendered.
-          body:
-            text/html:
         404:
           description: No ressource evailable to find without query string.
           body:
@@ -98,6 +93,52 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1
         headers:
           Authorization:
             type: string
+    ###########################################################################
+    /all-installations:
+      get:
+        responses:
+          200:
+            description:
+              List of all installations names rendered
+              successfully in a template containing a dropdown menu.
+            body:
+              text/html:
+          404:
+            description:
+              There's no ressource data for 2021 installations.
+            body:
+              img/svg+xml:
+          500:
+            description:
+              Internal server error.
+            body:
+              text/html:
+      /{installation}:
+        uriParameters:
+          installation:
+            type: string
+            description:
+              name of an arrondissement.
+          get:
+            responses:
+              200:
+                description:
+                  List of all data for a specific installation.
+                body:
+                  text/html:
+              404:
+                description:
+                  There's no data for that specific installation.
+                body:
+                  text/html:
+              500:
+                description:
+                  Internal server error.
+                body:
+                  text/html:
+            headers:
+              Authorization:
+                type: string
     ###########################################################################
     /2021:
       get:
@@ -159,22 +200,3 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1
               body:
                 text/html:
       #########################################################################
-      /installations/all-installations:
-        get:
-          responses:
-            200:
-              description:
-                List of all installations names rendered
-                successfully in a template containing a dropdown menu.
-              body:
-                text/html:
-            404:
-              description:
-                There's no ressource data for 2021 installations.
-              body:
-                img/svg+xml:
-            500:
-              description:
-                Internal server error.
-              body:
-                text/html:

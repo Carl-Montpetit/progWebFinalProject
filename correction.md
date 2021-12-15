@@ -122,7 +122,7 @@ Pour tester ce point il faut :
 
 1. Écrire une route dans `l'URL` en spécifiant un <u>paramètre</u> au **query string** : 
    - Ex : `http://eth1:5000/installations?arrondissement=Verdun`
-1. La fonction python attachée à la route `http://192.168.56.7:5000/installations` va être exécutée à l'aide de `Flask` . 
+1. La fonction python attachée à la route `http://eth1:5000/installations` va être exécutée à l'aide de `Flask` . 
 1. Cette fonction va aller chercher les données des trois tables dans la base de données contenant cette chaîne de caractère dans les enregistrements et va retourner les enregistrements des installations correspondants à l'arrondissement pour chacune des tables.
 1. Le contenue des trois tables sera empilés dans une liste avant d'être transformé en `format JSON`.
 1. Le résultat retournée par cette route sera affiché en `format JSON` <u>sur le navigateur</u>.
@@ -135,22 +135,22 @@ Pour tester ce point il faut :
 >
 > Fonctionne aussi!
 >
-> 🔎Le but est de laisser la chance à l'utilisateur de trouver ce dont il cherche avec plus d'aisance.
+> 🔎Le but est de laisser la chance à l'utilisateur de trouver ce dont il cherche avec plus d'aisance!
 
 ## Point A5 (10 points)
 
-> Une application JavaScript/HTML permet de saisir un arrondissement à partir d'un formulaire HTML. 
+> Une application `JavaScript/HTML` permet de saisir un arrondissement à partir d'un `formulaire HTML`. 
 >
-> Lorsque l'utilisateur lance la recherche, une requête asynchrone contenant l'arrondissement saisis est envoyée à la route définie en A4. Lorsque la réponse asynchrone revient, l'application affiche la liste des installations dans un tableau. L'application est disponible sur la page d'accueil du serveur (route
+> Lorsque l'utilisateur lance la recherche, une **requête asynchrone** contenant l'arrondissement saisis est envoyée à la route définie en `A4`. Lorsque la réponse asynchrone revient, l'application affiche la liste des installations dans `un tableau`. L'application est disponible sur la `page d'accueil` du serveur (route
 >
-> « / »).
+> « `/` »).
 
 Pour tester ce point il faut :
 
-1. Sur la page principale du logiciel (route '`/`') on doit cliquer sur le bouton `Search District Installations` pour se rendre sur la route `http://eth1:5000/installations` et ensuite on peut entrer la requête dans un champs texte approprié (Form input).
-1. La requête asynchrone  retourne la réponse sous forme de tableau  généré par `Tabulate` sur une page du fureteur le `content type` est `charset=UTF-8`.
+1. Sur la page principale du logiciel (route '`/`') on peut entrer la requête dans un champs texte approprié (Form input type text).
+1. La **requête asynchrone**  retourne la réponse sous **format  JSON**  sur la même page (`/`). Malheureusement j'avais réussi à faire un super tableau avec `Tabulate` avec un `content type` de `charset=UTF-8` mais cela empêchait le point `A5` de retourner le `JSON` demandé. J'ai laissé mon code en commentaire au besoin.
 
-> ⚠️Noter que le tableau généré par `Tabulate` est parfois décalé (avec beaucoup d'espace vide principalement pour la table contenant les patinoires) pour fusionner les résultats des trois tables ensemble. J'ai manqué de temps pour fixer ce problème.
+> ⚠️Noter que la requête asynchrone fonctionne seulement lorsqu'on clique sur le bouton `Search` sinon si on appuie sur `enter` le même résultat est généré  sur une page différente (j'ai manqué de temps pour régler ce point). D'ailleurs, l'encodage est bon sur l'autre page, mais pas sur la route `/` et j'ignore pourquoi car c'est `jsonnify` pour les deux cas.
 
 ## Point A6 (10 points)
 
@@ -158,7 +158,13 @@ Pour tester ce point il faut :
 
 Pour tester ce point il faut :
 
-1. 
+1. Sur la route `http://eth1:5000/installations/all-installations` on accéder à la liste déroulante contenant tous les installations connues de la base de données.
+1. Lorsqu'on choisis une installation tous les données sont affichées sur cette même page en `format JSON`.
+1. Cette tâche est accomplie par une requête asynchrone.
+
+> ​	⚠️Noter que le `front-end` n'est pas idéale, mais j'ai préféré mettre plus de temps et d'effort au niveau du back-end qui était plus nouveau et intéressant pour moi. 
+>
+> D'ailleurs, j'ai rencontré des problèmes de dépendances de styles avec `flask-bootstrap` et `CSS`. 
 
 ## Point C1 (10 points)
 
@@ -169,7 +175,7 @@ Pour tester ce point il faut :
 Pour tester ce point il faut :
 
 1. Lancer dans le navigateur la route : `http://eth1:5000/installations/2021`.
-1. Cela va générer une page contenant la liste de **tous les informations** concernant les installations mise à jour en 2021 en `format JSON`. Sinon utiliser la barre de navigation de l'application, clicker sur le bouton `Installations-2021 XML Format`.
+1. Cela va générer une page contenant la liste de **tous les informations** concernant les installations mise à jour en 2021 en `format JSON` en **ordre croissant du nom** de l'installation. Sinon utiliser la barre de navigation de l'application, clicker sur le bouton `Installations-2021 JSON Format`.
 
 > ⚠️Le format de la liste n'était pas spécifié j'ai donc fait le choix d'utiliser le `format JSON`.
 
@@ -191,10 +197,16 @@ Pour tester ce point il faut :
 1. Lancer la route suivante dans un navigateur : `http://eth1:5000/installations/2021/installations-2021.csv` ou d'utiliser la barre de navigation et clicker sur le sur le bouton `Installations-2021 CSV Format`.
 1. Un fichier  en `format CSV` va être téléchargé contenant le résultat.
 
-> ⚠️Noter que le `format CSV` est un choix horrible pour la modélisation de données du logiciel cela rend la lecture difficile et plusieurs champs sont inutiles pour certains types de données. Comme par exemple, les conditions des patinoires qui sont propre à eux etc…
+> ⚠️Noter que le `format CSV` est un choix horrible pour la modélisation de données de ce logiciel. Cela rend la lecture difficile et plusieurs champs sont inutiles pour certains types de données lorsqu'on fait l'union des trois tables. Comme par exemple, les conditions des patinoires qui sont propre à eux laissant beaucoup de champs vide pour certaines des colonnes…
 >
-> Or, `JSON` et `XML` sont des choix de qualités (par préférence JSON).
+> Or, `JSON` et `XML` sont des choix de qualités (par préférence `JSON`).
 >
-> 💡Il est clair qu'il existe peut-être une façon de bien générer le format `CSV` mais on va en rester là avec le temps impartie.
+> 💡Il est clair qu'il existe peut-être une façon de bien générer le format `CSV`, mais j'en suis resté là sur ce point.
 
 ---
+
+## Fin 
+
+> Une note pour mentionner que j'ai trouvé ce projet extrêmement enrichissant et intéressant et je planifie le terminer pour mon portfolio. Cependant, j'ai trouvé que la charge de travail était considérablement grande. J'ai travaillé fort, mais je n'ai pas réussis à atteindre mon objectif de 100 points. J'ai passé beaucoup de temps à la modélisation de la base de données et l'apprentissage des tous les outils/technologies. Je m'attends pas à avoir la meilleure note, mais l'important pour moi c'est l'apprentissage que j'en ai fait et que je vais continuer de faire. 
+>
+> Merci pour ce cours! 

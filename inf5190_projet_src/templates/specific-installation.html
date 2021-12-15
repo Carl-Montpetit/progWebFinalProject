@@ -15,7 +15,9 @@
             <select id="select"
                     name="select"
                     class=""
-                    onchange="onSelectInstallation()">
+                    onchange="loadDoc
+                    ('/districts/all-installations/',
+                    getInstallationData)">
                 {% for installation in installations[0] %}
                     <option value="{{ installation }}">{{ installation }}</option>
                 {% endfor %}
@@ -26,10 +28,29 @@
                     <option value="{{ installation }}">{{ installation }}</option>
                 {% endfor %}
             </select>
-            <input id="specific-btn"
-                   class="btn-success"
-                   type="submit"
-                   value="submit">
         </form>
     </div>
+    <div id="result"
+         class='container text-center'>
+        <p id="result"></p>
+    </div>
+    {% block scripts %}
+        <script>
+            function loadDoc(url, fct) {
+                const select = document.getElementById("select").value
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        fct(this);
+                    }
+                };
+                xhr.open("GET", url + select, true);
+                xhr.send();
+            }
+
+            function getInstallationData(xhr) {
+                document.getElementById("result").innerHTML = xhr.responseText
+            }
+        </script>
+    {% endblock scripts %}
 {% endblock content %}

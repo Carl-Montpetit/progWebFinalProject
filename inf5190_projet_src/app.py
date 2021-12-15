@@ -133,7 +133,7 @@ def main_page():
     return render_template('home.html'), 200
 
 
-@app.route('/installations', methods=['GET'])
+@app.route('/districts', methods=['GET'])
 def get_installations_for_arrondissement():
     """
     Return all installations for a specific query string entered as an
@@ -142,25 +142,28 @@ def get_installations_for_arrondissement():
     """
     # Getting the query string parameter for arrondissement
     arrondissement = str(request.args.get('arrondissement', None))
-    if arrondissement is None or arrondissement == '' or arrondissement == \
-            'None':
-        return render_template('installations.html')
-    elif len(arrondissement) < 4 or len(arrondissement) > 40 or not \
-            isinstance(arrondissement, str):
+    if len(arrondissement) < 4 or len(arrondissement) > 40 or not \
+            isinstance(arrondissement, str) or arrondissement is None or \
+            arrondissement == '' or arrondissement == 'None':
         return render_template('error.html',
                                error=ERR_MSG_ARR_QUERY_FORMAT), 404
-    installations_list = get_data_for_arrondissement(arrondissement)
-    if installations_list is None or len(installations_list) == 0:
+    installations_dict = get_data_for_arrondissement_as_dictionnaries(
+        arrondissement)
+    # installations_list = get_data_for_arrondissement(arrondissement)
+    if dict is None or len(installations_dict) == 0:
         return render_template('error.html',
                                error=ERR_MSG_NO_INSTALLATIONS_FOR_ARR), 404
-    json_installations = jsonify(installations_list)
-    return Response(tabulate(installations_list,
-                             tablefmt='grid').encode('utf-8'),
-                    content_type='charset=UTF-8'), 200
+    json_object = jsonify(installations_dict)
+    return json_object, 200
+    # return Response(tabulate({"Installations List": installations_list},
+    #                          headers='keys',
+    #                          tablefmt='html').encode('utf-8'),
+    #                 content_type='charset=UTF-8'), 200
 
 
-@app.route('/installations/2021', methods=['GET'])
+@app.route('/districts/2021', methods=['GET'])
 def get_installations_list_2021():
+    """Return all installations data updated in 2021 in JSON format."""
     installations_list = get_installations_data_2021()
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
@@ -168,8 +171,9 @@ def get_installations_list_2021():
     return formated_data, 200
 
 
-@app.route('/installations/all-installations', methods=['GET'])
+@app.route('/districts/all-installations', methods=['GET'])
 def get_all_installations_list():
+    """Return all installationst data."""
     installations_list = get_all_installations_names()
     if installations_list is None or len(installations_list) == 0:
         return abort(404)
@@ -177,7 +181,17 @@ def get_all_installations_list():
                            installations=list(installations_list)), 200
 
 
-@app.route('/installations/2021/installations-2021.xml',
+@app.route('/districts/all-installations/<string:specific>', methods=[
+    'GET'])
+def get_all_specific_installation_data(specific):
+    specific_data = get_all_specific_installation_data(specific)
+    if specific_data is None or len(specific_data) == 0:
+        abort(404)
+    json_data = jsonify(specific_data)
+    return json_data, 200
+
+
+@app.route('/districts/2021/installations-2021.xml',
            methods=['GET'])
 def get_XML_formated_installations_list_2021():
     """Return all installations data updated in 2021 in JSON format."""
@@ -188,7 +202,7 @@ def get_XML_formated_installations_list_2021():
     return Response(formated_data, content_type='application/xhtml+xml'), 200
 
 
-@app.route('/installations/2021/installations-2021.csv', methods=['GET'])
+@app.route('/districts/2021/installations-2021.csv', methods=['GET'])
 def get_CSV_formated_installations_list_2021():
     """Return all installations data updated in 2021 in CSV format."""
     installations_list = get_installations_data_2021()
@@ -222,12 +236,13 @@ def get_data_for_arrondissement(arrondissement):
     installations_glissades = \
         db.get_glissades_installations_list_from_arrondissement(
             arrondissement)
-    installations_list = installations_piscines + installations_patinoires + \
-                         installations_glissades
+    installations_list = (installations_piscines + installations_patinoires
+                          + installations_glissades)
     return installations_list
 
 
 def get_data_for_arrondissement_as_dictionnaries(arrondissement):
+    """Return all installations data for a specific arrondissement as dict"""
     installations_piscines = \
         db.get_piscines_installations_dict_from_arrondissement(arrondissement)
     installations_patinoires = \
@@ -251,13 +266,23 @@ def get_installations_data_2021():
 
 
 def get_all_installations_names():
-    """Return all installations updated in 2021 data from all tables"""
+    """Return all installations name updated in 2021 data from all tables"""
     installations_piscines = db.get_all_piscines_names()
     installations_patinoires = db.get_all_patinoires_names()
     installations_glissades = db.get_all_glissades_names()
     installations_list = [installations_piscines, installations_patinoires,
                           installations_glissades]
     return installations_list
+
+
+def get_all_specific_installation_data(specific):
+    """Return all installations name updated in 2021 data from all tables"""
+    specific_piscines = db.get_specific_piscine_data(specific)
+    specific_patinoires = db.get_specific_patinoire_data(specific)
+    specific_glissades = db.get_specific_glissade_data(specific)
+    specific_list = [specific_piscines + specific_patinoires +
+                     specific_glissades]
+    return specific_list
 
 
 ###############################################################################

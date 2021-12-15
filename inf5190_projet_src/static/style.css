@@ -79,6 +79,14 @@
     margin-top: 80px;
 }
 
+#result {
+    border: 2px black solid;
+    background-color: cadetblue;
+    border-radius: 5px 5px;
+    color: black;
+    box-shadow: 30px 30px 15px black;
+}
+
 .link {
     background-color: #333333;
 }

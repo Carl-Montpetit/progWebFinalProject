@@ -14,10 +14,6 @@
                 <meta charset="UTF-8"/>
                 <meta name="Carl Montpetit"
                       content="DDAIM"/>
-                <meta name="viewport"
-                      content="width=device-width, initial-scale=1,
-                      shrink-to-fit=no">
-
             {% endblock metas %}
         {% endblock head %}
         {% block body %}
@@ -28,7 +24,6 @@
             {% include "footer.html" %}
             {% block scripts %}
                 {{ super() }}
-                <script src="{{ url_for('static', filename='main.js') }}"></script>
             {% endblock scripts %}
         {% endblock body %}
     {% endblock html %}

@@ -279,6 +279,42 @@ class Database:
         connection.close()
         self.disconnect()
 
+    def get_specific_piscine_data(self, specific):
+        """return all data about a specific installation"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM piscines_installations_aquatiques
+        WHERE nom = ?;""", (specific,))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_specific_patinoire_data(self, specific):
+        """return all data about a specific installation"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM
+        patinoires WHERE nom_pat = ?;""", (specific,))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_specific_glissade_data(self, specific):
+        """return all data about a specific installation"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT * FROM
+        glissades WHERE nom = ?;""", (specific,))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
     def get_piscines_installations_list_from_arrondissement(self,
                                                             arrondissement):
         """return a list of installations specific to an arrondissement"""

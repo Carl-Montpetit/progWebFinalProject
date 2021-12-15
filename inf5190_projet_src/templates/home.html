@@ -21,30 +21,47 @@
         <form id="arrondissement-form"
               class="container text-center form-group"
               name="arrondissement-form"
-              action="">
+              action="{{ url_for('get_installations_for_arrondissement') }}">
             <label for="arrondissement">District
                                         (Arrondissement)</label>
-            <input type="text"
+            <input type="search"
+                   placeholder="Enter District"
                    class="field-name"
                    id="arrondissement"
                    name="arrondissement"
                    minlength="4"
                    maxlength="40"
-                   required
-                   placeholder="Enter District"
-                   onchange="loadDoc('/installations?arrondissement=',
-                       getInstallationsForDistrict)"
             >
             <button id="arrondissement-btn"
                     class="btn btn-success"
                     for="arrondissement"
-                    type="submit"
-                    onsubmit="return loadDoc('/installations?arrondissement=',
+                    type="button"
+                    onclick="loadDoc('/districts?arrondissement=',
                        getInstallationsForDistrict)">Search
             </button>
         </form>
-        <div class='container text-center'>
+        <div id="result"
+             class=''>
             <p id="result"></p>
         </div>
     </div>
+    {% block scripts %}
+        <script>
+            function loadDoc(url, fct) {
+                const arrondissement = document.getElementById("arrondissement").value
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        fct(this);
+                    }
+                };
+                xhr.open("GET", url + arrondissement, true);
+                xhr.send();
+            }
+
+            function getInstallationsForDistrict(xhr) {
+                document.getElementById("result").innerHTML = xhr.responseText
+            }
+        </script>
+    {% endblock scripts %}
 {% endblock content %}
