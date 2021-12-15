@@ -67,7 +67,6 @@ def scheduled_database_update():
     print('The database was updated at {}'.format(datetime.now(local_time)))
 
 
-# FIXME
 # Update database every day at midnight
 scheduler.add_job(scheduled_database_update, 'cron', hour='0', minute='0',
                   day='*')

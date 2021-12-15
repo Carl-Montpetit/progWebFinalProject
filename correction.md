@@ -207,6 +207,6 @@ Pour tester ce point il faut :
 
 ## Fin 
 
-> Une note pour mentionner que j'ai trouvé ce projet extrêmement enrichissant et intéressant et je planifie le terminer pour mon portfolio. Cependant, j'ai trouvé que la charge de travail était considérablement grande. J'ai travaillé fort, mais je n'ai pas réussis à atteindre mon objectif de 100 points. J'ai passé beaucoup de temps à la modélisation de la base de données et l'apprentissage des tous les outils/technologies. Je m'attends pas à avoir la meilleure note, mais l'important pour moi c'est l'apprentissage que j'en ai fait et que je vais continuer de faire. 
+> Une note pour mentionner que j'ai trouvé ce projet extrêmement enrichissant et intéressant et je planifie le terminer pour mon portfolio. Cependant, j'ai trouvé que la charge de travail était considérablement grande. J'ai travaillé fort, mais je n'ai pas réussis à atteindre mon objectif de 100 points. J'ai passé beaucoup de temps à la modélisation de la base de données et l'apprentissage des tous les outils/technologies. L'important pour moi c'est l'apprentissage que j'en ai fait. 
 >
 > Merci pour ce cours! 

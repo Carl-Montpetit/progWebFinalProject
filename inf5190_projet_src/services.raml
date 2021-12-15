@@ -118,27 +118,27 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1
           installation:
             type: string
             description:
-              name of an arrondissement.
-          get:
-            responses:
-              200:
-                description:
-                  List of all data for a specific installation.
-                body:
-                  text/html:
-              404:
-                description:
-                  There's no data for that specific installation.
-                body:
-                  text/html:
-              500:
-                description:
-                  Internal server error.
-                body:
-                  text/html:
-            headers:
-              Authorization:
-                type: string
+              Name of an installation.
+        get:
+          responses:
+            200:
+              description:
+                List of all data for a specific installation.
+              body:
+                text/html:
+            404:
+              description:
+                There's no data for that specific installation.
+              body:
+                text/html:
+            500:
+              description:
+                Internal server error.
+              body:
+                text/html:
+          headers:
+            Authorization:
+              type: string
     ###########################################################################
     /2021:
       get:
