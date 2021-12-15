@@ -69,7 +69,7 @@ def scheduled_database_update():
 
 # FIXME
 # Update database every day at midnight
-scheduler.add_job(scheduled_database_update, 'cron', hour='*', minute='0',
+scheduler.add_job(scheduled_database_update, 'cron', hour='0', minute='0',
                   day='*')
 scheduler.start()
 
@@ -130,13 +130,6 @@ def service_unavailable(error):
 
 @app.route('/', methods=['GET'])
 def main_page():
-    """Render the main template of the application"""
-    db.create_piscines_installations_aquatiques_table()
-    db.add_piscines_installations_aquatiques_data_to_database()
-    db.create_glissades_table()
-    db.add_glissades_data_to_database()
-    db.create_patinoires_table()
-    db.add_patinoires_data_to_database()
     return render_template('home.html'), 200
 
 
@@ -229,8 +222,21 @@ def get_data_for_arrondissement(arrondissement):
     installations_glissades = \
         db.get_glissades_installations_list_from_arrondissement(
             arrondissement)
-    installations_list = (installations_piscines + installations_patinoires
-                          + installations_glissades)
+    installations_list = installations_piscines + installations_patinoires + \
+                         installations_glissades
+    return installations_list
+
+
+def get_data_for_arrondissement_as_dictionnaries(arrondissement):
+    installations_piscines = \
+        db.get_piscines_installations_dict_from_arrondissement(arrondissement)
+    installations_patinoires = \
+        db.get_patinoires_installations_dict_from_arrondissement(
+            arrondissement)
+    installations_glissades = \
+        db.get_glissades_installations_dict_from_arrondissement(arrondissement)
+    installations_list = [installations_piscines, installations_patinoires,
+                          installations_glissades]
     return installations_list
 
 
@@ -239,8 +245,8 @@ def get_installations_data_2021():
     installations_piscines = db.get_piscines_installations_2021()
     installations_patinoires = db.get_patinoires_installations_2021()
     installations_glissades = db.get_patinoires_installations_2021()
-    installations_list = (installations_piscines, installations_patinoires,
-                          installations_glissades)
+    installations_list = [installations_piscines, installations_patinoires,
+                          installations_glissades]
     return installations_list
 
 
@@ -249,8 +255,8 @@ def get_all_installations_names():
     installations_piscines = db.get_all_piscines_names()
     installations_patinoires = db.get_all_patinoires_names()
     installations_glissades = db.get_all_glissades_names()
-    installations_list = (installations_piscines, installations_patinoires,
-                          installations_glissades)
+    installations_list = [installations_piscines, installations_patinoires,
+                          installations_glissades]
     return installations_list
 
 

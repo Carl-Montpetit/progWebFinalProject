@@ -1,50 +1,84 @@
-#title-main, #title-result {
-    text-shadow: 30px 30px 15px;
+#title-main, #title-result, #title-district {
+    box-shadow: 30px 30px 15px black;
     margin-bottom: 60px;
+    border: 3px solid black;
+    border-radius: 40px;
+    background-color: #6cbd7d;
+    padding: 5px;
+    color: black;
+}
+
+#enter-district-msg {
+    margin-bottom: 20px;
+    color: black;
+}
+
+#welcome {
+    color: maroon;
 }
 
 #arrondissement-form {
-    box-shadow: 30px 30px 15px;
+    box-shadow: 30px 30px 15px black;
     background-color: #63a8e2;
     padding: 20px;
     margin-bottom: 30px;
     margin-top: 30px;
     width: 400px;
     height: auto;
-    border-radius: 5px;
-    border: solid;
-
+    border-radius: 100px;
+    border: black solid 2px
 }
 
 #arrondissement-btn {
     margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
+    border-radius: 5px;
+    border: solid black 2px;
+    color: black;
+    font-weight: bold;
 }
 
 #arrondissement {
     margin: 3px;
-    border: 2px;
-    border-radius: 5px;
+    border: 2px black solid;
+    border-radius: 3px;
+    background-color: seashell;
+    align-items: center;
 }
 
 #title-dropdown {
-    text-shadow: 30px 30px 15px;
+    text-shadow: 30px 30px 15px black;
     margin-bottom: 60px;
+    color: darkgreen;
 }
 
-#dropdown-button {
+#specific-btn {
     color: black;
-    background-color: darkgray;
-    border-radius: 5px;
-    border: solid;
-    box-shadow: 30px 30px 15px;
 }
 
 #footer {
     margin-top: 50px;
     color: black;
     text-align: center;
+}
+
+#error-msg {
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #d26460;
+    box-shadow: 30px 30px 15px black;
+    margin-bottom: 40px;
+    padding: 10px
+}
+
+#try-again-msg {
+    margin-top: 40px;
+}
+
+#thank-msg {
+    margin-top: 80px;
+}
+
+.link {
+    background-color: #333333;
 }

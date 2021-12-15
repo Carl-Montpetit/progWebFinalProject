@@ -39,8 +39,8 @@ EMPTY_IS_NULL_DEBLAYE_GLISSADES = """UPDATE glissades SET
 deblaye = NULLIF(deblaye, ?)"""
 EMPTY_IS_NULL_OUVERT_GLISSADES = """UPDATE glissades SET
 ouvert = NULLIF(ouvert, ?)"""
-DESTROY_UGLY_PARENTHESIS = """UPDATE patinoires SET nom_pat = REPLACE(
-nom_pat, ?, ?)"""
+DESTROY_UGLY_PARENTHESIS_PATINOIRE = """UPDATE patinoires SET nom_pat =
+REPLACE(nom_pat, ?, ?)"""
 CREATE_PISCINES = """CREATE TABLE piscines_installations_aquatiques(
 id INTEGER  PRIMARY KEY AUTOINCREMENT, id_uev INTEGER, type VARCHAR(100),
 nom  VARCHAR(100), arrondissement VARCHAR(100), adresse
@@ -104,7 +104,8 @@ def multiple_query_patinoires(cursor):
     cursor.execute(EMPTY_IS_NULL_DEBLAYE, ('None',))
     cursor.execute(EMPTY_IS_NULL_ARROSE, ('None',))
     cursor.execute(EMPTY_IS_NULL_RESURFACE, ('None',))
-    cursor.execute(DESTROY_UGLY_PARENTHESIS, ('()', ''))
+    cursor.execute(DESTROY_UGLY_PARENTHESIS_PATINOIRE, ('()', ''))
+
 
 def multiple_query_glissoires(cursor, rows):
     cursor.executemany(INSERT_GLISSADES, rows)
@@ -283,10 +284,11 @@ class Database:
         """return a list of installations specific to an arrondissement"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom FROM
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom FROM
         piscines_installations_aquatiques
-        WHERE arrondissement LIKE ?;""", ('%' + arrondissement + '%',))
-        record_list = cursor_records_to_dictionnary(cursor)
+        WHERE arrondissement LIKE ?;""", ('%' + arrondissement + '%',)):
+            record_list.append(row[0])
         connection.commit()
         connection.close()
         self.disconnect()
@@ -297,9 +299,10 @@ class Database:
         """return a list of installations specific to an arrondissement"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom_pat FROM patinoires WHERE nom_arr
-        LIKE ?;""", ('%' + arrondissement + '%',))
-        record_list = cursor_records_to_dictionnary(cursor)
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom_pat FROM patinoires
+        WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',)):
+            record_list.append(row[0])
         connection.commit()
         connection.close()
         self.disconnect()
@@ -310,8 +313,49 @@ class Database:
         """return a list of installations specific to an arrondissement"""
         connection = self.get_connection()
         cursor = connection.cursor()
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom FROM
+           glissades WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',)):
+            record_list.append(row[0])
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_piscines_installations_dict_from_arrondissement(self,
+                                                            arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
         cursor.execute("""SELECT DISTINCT nom FROM
-           glissades WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',))
+        piscines_installations_aquatiques
+        WHERE arrondissement LIKE ?;""", ('%' + arrondissement + '%',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_patinoires_installations_dict_from_arrondissement(self,
+                                                              arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom_pat FROM patinoires
+        WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',))
+        record_list = cursor_records_to_dictionnary(cursor)
+        connection.commit()
+        connection.close()
+        self.disconnect()
+        return record_list
+
+    def get_glissades_installations_dict_from_arrondissement(self,
+                                                             arrondissement):
+        """return a list of installations specific to an arrondissement"""
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("""SELECT DISTINCT nom FROM
+        glissades WHERE nom_arr LIKE ?;""", ('%' + arrondissement + '%',))
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()
@@ -323,7 +367,7 @@ class Database:
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
-           piscines_installations_aquatiques ORDER BY nom ASC;""")
+           piscines_installations_aquatiques ORDER BY nom;""")
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()
@@ -336,7 +380,7 @@ class Database:
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
            patinoires WHERE date_heure >= ? ORDER BY nom_pat
-           ASC;""", ('2021-1-1',))
+           ;""", ('2021-1-1',))
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()
@@ -348,7 +392,7 @@ class Database:
         connection = self.get_connection()
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM
-           glissades WHERE date_maj >= ? ORDER BY nom ASC;""", ('2021-1-1',))
+           glissades WHERE date_maj >= ? ORDER BY nom;""", ('2021-1-1',))
         record_list = cursor_records_to_dictionnary(cursor)
         connection.commit()
         connection.close()
@@ -359,9 +403,10 @@ class Database:
         """return a list of all piscines names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom FROM
-        piscines_installations_aquatiques;""")
-        record_list = cursor_records_to_dictionnary(cursor)
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom FROM
+        piscines_installations_aquatiques;"""):
+            record_list.append(row[0])
         connection.commit()
         connection.close()
         self.disconnect()
@@ -371,9 +416,10 @@ class Database:
         """return a list of all patinoires names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom_pat FROM
-        patinoires;""")
-        record_list = cursor_records_to_dictionnary(cursor)
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom_pat FROM
+        patinoires;"""):
+            record_list.append(row[0])
         connection.commit()
         connection.close()
         self.disconnect()
@@ -383,9 +429,10 @@ class Database:
         """return a list of all patinoires names"""
         connection = self.get_connection()
         cursor = connection.cursor()
-        cursor.execute("""SELECT DISTINCT nom FROM
-           glissades;""")
-        record_list = cursor_records_to_dictionnary(cursor)
+        record_list = []
+        for row in cursor.execute("""SELECT DISTINCT nom FROM
+           glissades;"""):
+            record_list.append(row[0])
         connection.commit()
         connection.close()
         self.disconnect()

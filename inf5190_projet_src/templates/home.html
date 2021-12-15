@@ -1,10 +1,50 @@
 {% extends "index.html" %}
-{% block title %}💾DDAIM{% endblock title %}
-
+{% block title %}<title>DDAIM</title>{% endblock title %}
 {% block content %}
-    <h1 id="title-main" class="text-center">Districts Data for Activities Installations of Montreal (DDAIM)</h1>
-    <h3 class="text-center text-primary">Welcome to your favorite software
-        to search data about activities in districts of Montreal!
-    </h3>
-    <script src="main.js"></script>
+    <div class="container text-center ">
+        <h1 id="title-main"
+            class="text-center">Districts Data for Activities Installations of
+                                Montreal (DDAIM)</h1>
+        <h3 id="welcome"
+            class="text-center">Welcome to your favorite software
+                                to search data about activities in
+                                districts of Montreal!
+        </h3>
+    </div>
+    <div class="container text-center ">
+        <h4 id="enter-district-msg"
+            class="text-center text-primary">Enter the
+                                             district you would
+                                             like
+                                             to see the installations
+                                             data!</h4>
+        <form id="arrondissement-form"
+              class="container text-center form-group"
+              name="arrondissement-form"
+              action="">
+            <label for="arrondissement">District
+                                        (Arrondissement)</label>
+            <input type="text"
+                   class="field-name"
+                   id="arrondissement"
+                   name="arrondissement"
+                   minlength="4"
+                   maxlength="40"
+                   required
+                   placeholder="Enter District"
+                   onchange="loadDoc('/installations?arrondissement=',
+                       getInstallationsForDistrict)"
+            >
+            <button id="arrondissement-btn"
+                    class="btn btn-success"
+                    for="arrondissement"
+                    type="submit"
+                    onsubmit="return loadDoc('/installations?arrondissement=',
+                       getInstallationsForDistrict)">Search
+            </button>
+        </form>
+        <div class='container text-center'>
+            <p id="result"></p>
+        </div>
+    </div>
 {% endblock content %}

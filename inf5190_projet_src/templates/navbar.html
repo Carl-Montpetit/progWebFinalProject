@@ -1,35 +1,47 @@
-{#source: https://www.quackit.com/bootstrap/bootstrap_3/tutorial/bootstrap_navbars.cfm#}
-<nav class="navbar navbar-inverse">
+{# source: https://www.quackit.com/bootstrap/bootstrap_3/tutorial/bootstrap_navbars
+.cfm #}
+<nav id="navbar"
+     class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
+            <button type="button"
+                    class="navbar-toggle collapsed"
                     data-toggle="collapse"
+                    data-target="#example-1"
                     aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url_for('main_page') }}">🏒⛷🏊‍</a>
+            <a class="navbar-brand"
+               href="{{ url_for('main_page') }}">DDAIM</a>
         </div>
-        <div class="collapse navbar-collapse" id="alignment-example">
+        <div class="collapse navbar-collapse"
+             id="example-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for
-                    ('get_installations_for_arrondissement') }}">🔎Search
-                    District
-                    Installations<span class="sr-only">(current)</span></a>
+                <li class="active"><a href="{{ url_for('main_page') }}">🔎Search
+                                                                        District
+                                                                        Installation
+                    <span class="sr-only">(current)</span></a>
                 </li>
                 <li><a href="{{ url_for
                     ('get_all_installations_list') }}">🔎Search
-                    Specific Installation</a></li>
+                                                       Specific
+                                                       Installation</a></li>
                 <li><a href="{{ url_for
             ('get_installations_list_2021') }}">Installations-2021 JSON
-                    Format</a></li>
+                                                Format</a></li>
                 <li><a href="{{ url_for
                     ('get_XML_formated_installations_list_2021') }}">Installations-2021
-                    XML
-                    Format</a></li>
+                                                                     XML
+                                                                     Format</a>
+                </li>
                 <li><a href="{{ url_for
                     ('get_CSV_formated_installations_list_2021') }}">Installations-2021
-                    CSV
-                    Format</a></li>
+                                                                     CSV
+                                                                     Format</a>
+                </li>
             </ul>
         </div>
     </div>

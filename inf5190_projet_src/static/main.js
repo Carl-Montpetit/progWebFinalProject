@@ -1,33 +1,49 @@
-function onSubmitDistrict() {
+//-----------------------------------------------------------------------------
+// CONSTANTS //
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// FUNCTIONS //
+//-----------------------------------------------------------------------------
+/**
+ * Async function that return the response of GET http request of an url
+ *
+ * @param url
+ * @param fct
+ */
+function loadDoc(url, fct) {
+    alert(OK)
     const arrondissement = document.getElementById("arrondissement").value
-    alert(arrondissement)
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                alert(xhr.responseText)
-            } else {
-                console.log("Error, an error with the server occured!")
-            }
+        if (this.readyState === 4 && this.status === 200) {
+            fct(this);
         }
-    }
-    xhr.open("GET", 'allo', true);
+    };
+    xhr.open("GET", url + arrondissement, true);
     xhr.send();
 }
 
-function onSelectInstallation() {
-    const installation = document.getElementById("select-installation").value
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === XMLHttpRequest.DONE) {
-            if (xhttp.status === 200) {
-                alert(xhttp.responseText)
-            } else {
-                console.log("Error, an error with the server occured!")
-            }
-        }
-    }
-    xhttp.open("GET", '/installations?installation=' + installation, true);
-    xhttp.send();
+/**
+ * Call back funtion used to as purpose to get the result
+ * of : /installations?arrondissements={arrondissement}
+ *
+ * @param xhr
+ */
+function getInstallationsForDistrict(xhr) {
+    document.getElementById("result").innerHTML = xhr.responseText;
 }
-document.getElementById("arrondissement-form").addEventListener("submit", onSubmitDistrict)
+
+/**
+ * Call back funtion used to as purpose to get the result
+ * /installations?installation={installation}
+ *
+ * @param xhr
+ */
+function getInstallationsDataForSpecificInstallation(xhr) {
+    document.getElementById("result").innerHTML = xhr.responseText;
+}
+
+//-----------------------------------------------------------------------------
+// END OF FILE //
+//-----------------------------------------------------------------------------

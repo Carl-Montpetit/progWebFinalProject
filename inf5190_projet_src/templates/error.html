@@ -1,25 +1,22 @@
 {% extends "index.html" %}
-{% block title %}⚠️Error{% endblock title %}
+{% block title %}<title>⚠️Error</title>{% endblock title %}
 {% block content %}
     <div class="container">
-        <h1 class="text-center text-danger">⚠️ {{ error }} ⚠️
-            <br/>
-        </h1>
-        <br/>
-        <hr/>
-        <br/>
-        <h3 class="text-center text-primary">Please, Try
-            Again!</h3>
+        <h2 id="error-msg"
+            class="text-center">{{ error }}️</h2>
+        <h2 id="try-again-msg"
+            class="text-center text-primary">Please, Try
+                                             Again!</h2>
         <div class="text-center">
             <h3>👇</h3>
             <a
                     class="btn btn-success font-weight-bolder"
                     href="/">↻Click here!
             </a>
-            <br/>
-            <br/>
-            <h1 class="text-center text-warning font-weight-bold">Thank
-                You!🙂</h1>
+            <h1 id="thank-msg"
+                class="text-center text-warning
+            font-weight-bold">Thank
+                              You!</h1>
         </div>
     </div>
 {% endblock content %}

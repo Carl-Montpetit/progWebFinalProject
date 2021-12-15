@@ -1,9 +1,10 @@
 #%RAML 1.0
-title: Documentation of REST services of the DDAIM by Carl Montpetit
+title: Documentation REST services of DDAIM
 version: 1.0
-baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
+baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1
+  ip address)
 ###############################################################################
-/: # optional resource
+/: # root resource
   description:
     This is the main resource of the application.
   get: # HTTP method declaration
@@ -13,6 +14,16 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
           The main resource was rendered successfully.
         body: # declare content of response
           text/html: # media type
+      500:
+        description:
+          Internal server error.
+        body:
+          text/html:
+      503:
+        description:
+          Service is unavailable for some reason.
+        body:
+          text/html:
   #############################################################################
   /doc:
     displayName:
@@ -24,6 +35,14 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
         200:
           description:
             The documentation of REST services rendered successfully.
+          body:
+            text/html:
+        401:
+          description:
+            Unauthorized to access this route.
+        500:
+          description:
+            Internal server error.
           body:
             text/html:
   #############################################################################
@@ -42,6 +61,11 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
             text/html:
         404:
           description: No ressource evailable to find without query string.
+          body:
+            text/html:
+        500:
+          description:
+            Internal server error.
           body:
             text/html:
     /{arrondissement}:
@@ -66,6 +90,11 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
               format of query string is invalid.
             body:
               text/html:
+          500:
+            description:
+              Internal server error.
+            body:
+              text/html:
         headers:
           Authorization:
             type: string
@@ -84,6 +113,11 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
               There's no ressource data for 2021 installations.
             body:
               text/html:
+          500:
+            description:
+              Internal server error.
+            body:
+              text/html:
       #########################################################################
       /installations-2021.xml:
         get:
@@ -97,6 +131,11 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
             404:
               description:
                 There's no ressource data for 2021 installations.
+              body:
+                text/html:
+            500:
+              description:
+                Internal server error.
               body:
                 text/html:
       #########################################################################
@@ -114,6 +153,11 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
                 There's no ressource data for 2021 installations.
               body:
                 text/html:
+            500:
+              description:
+                Internal server error.
+              body:
+                text/html:
       #########################################################################
       /installations/all-installations:
         get:
@@ -129,3 +173,8 @@ baseUri: http://192.168.56.7:5000 (replace ip by local virtual machine eth1 ip)
                 There's no ressource data for 2021 installations.
               body:
                 img/svg+xml:
+            500:
+              description:
+                Internal server error.
+              body:
+                text/html:

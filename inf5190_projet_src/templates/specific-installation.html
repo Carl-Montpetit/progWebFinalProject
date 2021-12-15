@@ -1,29 +1,35 @@
 {% extends "index.html" %}
-{% block title %}💾DDAIM{% endblock title %}
+{% block title %}<title>🔎Specific Installation</title>{% endblock title %}
 {% block content %}
-    <div class="container">
-        <h3 id="title-dropdown" class="text-center">Here's a dropdown list that
-        contains all
-            installations
-            available!</h3>
-        <div id="dropdown" class="dropdown text-center">
-            <button id="dropdown-button" class="btn btn-default
-            dropdown-toggle"
-                    type="button"
-                    data-toggle="dropdown">All Installations
-                <span class="caret"></span></button>
-            <ul id="dropdown-menu" class="dropdown-menu"
-                onchange="onSelectInstallation()">
+    <div class="container text-center ">
+        <h1 id="title-main"
+            class="text-center">Districts Data for Activities Installations of
+                                Montreal (DDAIM)</h1>
+        <h3 id="title-dropdown"
+            class="text-center">Here's a dropdown list that
+                                contains all
+                                installations
+                                available!</h3>
+        <form>
+            <label for="select">Choose An Installation :</label>
+            <select id="select"
+                    name="select"
+                    class=""
+                    onchange="onSelectInstallation()">
                 {% for installation in installations[0] %}
-                    <li><a>{{ installation }}</a></li>
+                    <option value="{{ installation }}">{{ installation }}</option>
                 {% endfor %}
                 {% for installation in installations[1] %}
-                    <li><a>{{ installation }}</a></li>
+                    <option value="{{ installation }}">{{ installation }}</option>
                 {% endfor %}
                 {% for installation in installations[2] %}
-                    <li><a>{{ installation }}</a></li>
+                    <option value="{{ installation }}">{{ installation }}</option>
                 {% endfor %}
-            </ul>
-        </div>
+            </select>
+            <input id="specific-btn"
+                   class="btn-success"
+                   type="submit"
+                   value="submit">
+        </form>
     </div>
 {% endblock content %}
